@@ -2,8 +2,12 @@
 	"name": "spockee",
 	"displayName": "Spockee",
 	"publisher": "bjmrqspockee",
-	"description": "",
-	"version": "0.0.1",
+	"description": "Extension to use with CLI",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/BjMrq/vscodeExtension"
+	},
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.53.0"
 	},
