@@ -5,14 +5,14 @@ import { SpockeeCLITree } from "./cli/spockeeCliTree";
 import { SpockeeDockerGroupTree } from "./docker/spockeeDockerTree";
 import { InstalledApplicationsTree } from "./installedApplication/installedApplicationsTree";
 import { SpockeeApplicationsTree } from "./spockeeApplications/spockeeApplicationsTree";
-import { isSpockeeCliInstalled, openInCode } from "./utils/cli";
+import { openInCode } from "./utils/cli";
 import { getSpockeeData, updateTreesState } from "./utils/data";
 
 // eslint-disable-next-line import/no-unused-modules
 export function activate() {
-  if (isSpockeeCliInstalled()) {
-    const spockeeData = getSpockeeData();
+  const spockeeData = getSpockeeData();
 
+  if (spockeeData.applicationList) {
     // CLI
     vscode.window.createTreeView("spockeeCli", {
       treeDataProvider: new SpockeeCLITree(),
