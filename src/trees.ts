@@ -4,7 +4,7 @@ import { SpockeeDockerGroupTree } from "./docker/spockeeDockerTree";
 import { InstalledApplicationsTree } from "./installedApplication/installedApplicationsTree";
 import { SpockeeApplicationsTree } from "./spockeeApplications/spockeeApplicationsTree";
 
-export const spockeeTress = {
+export const spockeeTrees = {
   dockerGroups: new SpockeeDockerGroupTree(initSpockeeData),
 
   installedApplications: new InstalledApplicationsTree(initSpockeeData),

@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 import { spawnSync } from "child_process";
 import { spockeeRoot } from "../config/constants";
 import { SpockeeData } from "../types/data";
+import { spockeeTrees } from "../trees";
 
 export const getSpockeeData = (): SpockeeData =>
   JSON.parse(
@@ -25,6 +26,10 @@ export function updateTreesState(
     tree.refreshWith(freshData);
   });
 }
+
+export const updateAllTreesState = () =>
+  // @ts-expect-error
+  updateTreesState(Object.values(spockeeTrees));
 
 // export const getSpockeeData = async (): Promise<SpockeeData> =>
 //   JSON.parse(await cliSendAction("code")) as SpockeeData;

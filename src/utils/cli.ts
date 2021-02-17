@@ -1,17 +1,7 @@
-import { spawn } from "child_process";
+import { exec, spawnSync } from "child_process";
 import { spockeeRoot } from "../config/constants";
-import { Application } from "../spockeeApplications/applicationElement";
-
-export const openInCode = ({ applicationData }: Application) => {
-  spawn("code", ["."], {
-    cwd: `${spockeeRoot}/${applicationData.folder}`,
-  });
-};
-
-
-import { exec } from "child_process";
 import { promisify } from "util";
-import { spockeeRoot } from "../config/constants";
+import { SpockeeData } from "../types/data";
 
 const asyncSpawn = promisify(exec);
 
@@ -28,3 +18,14 @@ export const cliSendActionAsync = async (
 
   return "An error happened with the cli";
 };
+
+export const cliSendActionSync = (...cliArguments: string[]): string =>
+  JSON.parse(
+    String.fromCharCode(
+      ...((spawnSync("spockee", cliArguments, {
+        shell: true,
+
+        env: { ...process.env, SPOCKEE_ROOT: spockeeRoot },
+      }).stdout as unknown) as number[])
+    )
+  ) as string;

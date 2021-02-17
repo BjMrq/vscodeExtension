@@ -1,24 +1,30 @@
 /* eslint-disable max-statements */
 // eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
+import { openInCode } from "./actions/openInCode";
 import { installApplication } from "./cli-actions/install";
 import { InstalledApplicationsTree } from "./installedApplication/installedApplicationsTree";
-import { spockeeTress } from "./trees";
-import { openInCode } from "./utils/cli";
-import { getSpockeeData, updateTreesState } from "./utils/data";
+import { spockeeTrees } from "./trees";
+import {
+  getSpockeeData,
+  updateAllTreesState,
+  updateTreesState,
+} from "./utils/data";
 
 const {
   dockerGroups,
   cliActions,
   spockeeApplications,
   installedApplications,
-} = spockeeTress;
+} = spockeeTrees;
 
 // eslint-disable-next-line import/no-unused-modules
 export function activate() {
   const spockeeData = getSpockeeData();
 
   if (spockeeData.applicationList) {
+    updateAllTreesState();
+
     // CLI
     vscode.window.createTreeView("spockeeCli", {
       treeDataProvider: cliActions,
