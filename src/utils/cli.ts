@@ -1,7 +1,6 @@
 import { exec, spawnSync } from "child_process";
 import { spockeeRoot } from "../config/constants";
 import { promisify } from "util";
-import { SpockeeData } from "../types/data";
 
 const asyncSpawn = promisify(exec);
 
@@ -20,12 +19,8 @@ export const cliSendActionAsync = async (
 };
 
 export const cliSendActionSync = (...cliArguments: string[]): string =>
-  JSON.parse(
-    String.fromCharCode(
-      ...((spawnSync("spockee", cliArguments, {
-        shell: true,
-
-        env: { ...process.env, SPOCKEE_ROOT: spockeeRoot },
-      }).stdout as unknown) as number[])
-    )
-  ) as string;
+  String.fromCharCode(
+    ...((spawnSync("spockee", cliArguments, {
+      env: { ...process.env, SPOCKEE_ROOT: spockeeRoot },
+    }).stdout as unknown) as number[])
+  );

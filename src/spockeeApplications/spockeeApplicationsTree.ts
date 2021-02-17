@@ -28,9 +28,9 @@ export class SpockeeApplicationsTree
 
   getChildren(): Thenable<any[]> {
     return Promise.resolve(
-      this.spockeeData.applicationList.map(
-        (application) => new Application(application)
-      )
+      this.spockeeData.applicationList
+        .filter((application) => !application.isInstalled)
+        .map((application) => new Application(application))
     );
   }
 }

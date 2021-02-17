@@ -1,11 +1,11 @@
 /* eslint-disable promise/avoid-new */
 /* eslint-disable no-void */
 /* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable no-tabs */
 // eslint-disable-next-line import/no-unresolved
 import { ProgressLocation, window } from "vscode";
 import { Application } from "../spockeeApplications/applicationElement";
 import { cliSendActionAsync } from "../utils/cli";
+import { updateAllTreesState } from "../utils/data";
 
 export const installApplication = async ({
   applicationData: { folder },
@@ -13,35 +13,31 @@ export const installApplication = async ({
   void window.withProgress(
     { title: `Installing ${folder}`, location: ProgressLocation.Notification },
     async (progress) => {
-      // token.onCancellationRequested(() => {
-      // 	console.log("User canceled the long running operation");
-      // });
-
-      progress.report({ increment: 0 });
-
       progress.report({
-        increment: 10,
-        message: "I am long running! - still going...",
+        increment: 20,
+        message: "Cloning repository",
       });
-
-      progress.report({
-        increment: 40,
-        message: "I am long running! - still going even more...",
-      });
-
-      await cliSendActionAsync("git", "install", folder);
 
       setTimeout(() => {
         progress.report({
-          increment: 50,
-          message: "I am long running! - almost there...",
+          increment: 40,
+          message: "Installing dependencies",
         });
       }, 3000);
 
+      setTimeout(() => {
+        progress.report({
+          increment: 40,
+          message: "Updating environment variables",
+        });
+      }, 6000);
+
+      await cliSendActionAsync("git", "install", folder);
+
+      updateAllTreesState();
+
       return new Promise<void>((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, 5000);
+        resolve();
       });
     }
   );
