@@ -1,14 +1,18 @@
 /* eslint-disable max-statements */
 // eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
-import { SpockeeCLITree } from "./cli/spockeeCliTree";
-import { SpockeeDockerGroupTree } from "./docker/spockeeDockerTree";
+import { installApplication } from "./cli-actions/install";
 import { InstalledApplicationsTree } from "./installedApplication/installedApplicationsTree";
-import { SpockeeApplicationsTree } from "./spockeeApplications/spockeeApplicationsTree";
-import { installedApplications, spockeeApplications } from "./trees";
+import { spockeeTress } from "./trees";
 import { openInCode } from "./utils/cli";
 import { getSpockeeData, updateTreesState } from "./utils/data";
 
+const {
+  dockerGroups,
+  cliActions,
+  spockeeApplications,
+  installedApplications,
+} = spockeeTress;
 
 // eslint-disable-next-line import/no-unused-modules
 export function activate() {
@@ -17,13 +21,13 @@ export function activate() {
   if (spockeeData.applicationList) {
     // CLI
     vscode.window.createTreeView("spockeeCli", {
-      treeDataProvider: new SpockeeCLITree(),
+      treeDataProvider: cliActions,
     });
 
     // Docker
 
     vscode.window.createTreeView("spockeeDockerGroup", {
-      treeDataProvider: ,
+      treeDataProvider: dockerGroups,
     });
 
     // Installed applications
@@ -46,6 +50,8 @@ export function activate() {
 
     // Open in code
     vscode.commands.registerCommand("spockeeApp.openInCode", openInCode);
+    // Install
+    vscode.commands.registerCommand("spockeeApp.install", installApplication);
   } else {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     vscode.window.showErrorMessage(

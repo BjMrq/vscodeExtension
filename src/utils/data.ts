@@ -25,3 +25,28 @@ export function updateTreesState(
     tree.refreshWith(freshData);
   });
 }
+
+// export const getSpockeeData = async (): Promise<SpockeeData> =>
+//   JSON.parse(await cliSendAction("code")) as SpockeeData;
+
+// function updateTreesDataWith(...trees: vscode.TreeDataProvider<any>[]) {
+//   // eslint-disable-next-line putout/putout
+//   return function (spockeeData: SpockeeData) {
+//     trees.forEach(function update(tree) {
+//       // @ts-expect-error
+//       tree.refreshWith(spockeeData);
+//     });
+//   };
+// }
+
+// export const updateSpockeeTreesWith = updateTreesDataWith(
+//   installedApplications,
+//   spockeeApplications,
+//   dockerGroups
+// );
+
+// export const refreshTreesData = async () => {
+//   const freshData = await getSpockeeData();
+
+//   updateSpockeeTreesWith(freshData);
+// };
