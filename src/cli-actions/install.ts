@@ -9,7 +9,7 @@ import { updateAllTreesState } from "../utils/data";
 
 export const installApplication = async ({
   applicationData: { folder },
-}: Application): Promise<string> => {
+}: Application): Promise<void> => {
   void window.withProgress(
     { title: `Installing ${folder}`, location: ProgressLocation.Notification },
     async (progress) => {
@@ -41,15 +41,4 @@ export const installApplication = async ({
       });
     }
   );
-
-  // const returned = cliSendAction("git", "install", folder);
-
-  // if (returned.includes("Done")) {
-  //   window.showInformationMessage(`${folder} was successfully installed`);
-  //   updateAllSpockeeData();
-  // } else {
-  //   window.showErrorMessage(`Could not install ${folder}`);
-  // }
-
-  return "true";
 };
