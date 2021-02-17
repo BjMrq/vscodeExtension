@@ -32,8 +32,8 @@ export class SpockeeDockerGroupTree
   }
 
   getChildren(
-    element: DockerGroup | DockerContainer
-  ): Thenable<DockerGroup | DockerContainer[]> {
+    element: DockerGroup
+  ): Thenable<DockerGroup[] | DockerContainer[]> {
     if (element?.children) return Promise.resolve(element.children);
 
     const groupAndContainers = this.spockeeData.dockerGroups.map(
@@ -47,7 +47,6 @@ export class SpockeeDockerGroupTree
         )
     );
 
-    // @ts-expect-error
     const flattenDockerGroups = groupAndContainers.flat();
 
     return Promise.resolve(flattenDockerGroups);

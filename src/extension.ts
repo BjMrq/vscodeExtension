@@ -3,13 +3,8 @@
 import * as vscode from "vscode";
 import { openInCode } from "./actions/openInCode";
 import { installApplication } from "./cli-actions/install";
-import { InstalledApplicationsTree } from "./installedApplication/installedApplicationsTree";
 import { spockeeTrees } from "./trees";
-import {
-  getSpockeeData,
-  updateAllTreesState,
-  updateTreesState,
-} from "./utils/data";
+import { getSpockeeData, updateAllTreesState } from "./utils/data";
 
 const {
   dockerGroups,
@@ -23,7 +18,7 @@ export function activate() {
   const spockeeData = getSpockeeData();
 
   if (spockeeData.applicationList) {
-    updateAllTreesState();
+    updateAllTreesState(spockeeData);
 
     // CLI
     vscode.window.createTreeView("spockeeCli", {
@@ -37,7 +32,6 @@ export function activate() {
     });
 
     // Installed applications
-    const installedApplication = new InstalledApplicationsTree(spockeeData);
 
     vscode.window.createTreeView("installedApplications", {
       treeDataProvider: installedApplications,
@@ -50,8 +44,9 @@ export function activate() {
 
     // Commands
     // Refresh data
-    vscode.commands.registerCommand("spockeeData.refreshEntry", () =>
-      updateTreesState(installedApplication, spockeeApplications)
+    vscode.commands.registerCommand(
+      "spockeeData.refreshEntry",
+      updateAllTreesState
     );
 
     // Open in code

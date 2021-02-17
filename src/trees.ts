@@ -11,5 +11,5 @@ export const spockeeTrees = {
 
   spockeeApplications: new SpockeeApplicationsTree(initSpockeeData),
 
-  cliActions: new SpockeeCLITree(),
+  cliActions: new SpockeeCLITree(initSpockeeData),
 };

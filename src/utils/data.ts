@@ -16,20 +16,21 @@ export const getSpockeeData = (): SpockeeData =>
     )
   ) as SpockeeData;
 
-export function updateTreesState(
-  ...trees: vscode.TreeDataProvider<any>[]
-): void {
-  const freshData = getSpockeeData();
-
-  trees.forEach(function update(tree) {
-    // @ts-expect-error
-    tree.refreshWith(freshData);
-  });
+function updateTreesState(trees: vscode.TreeDataProvider<any>[]) {
+  return (spockeeData: SpockeeData) => {
+    trees.forEach(function update(tree) {
+      console.log(tree);
+      // @ts-expect-error
+      tree.refreshWith(spockeeData);
+    });
+  };
+  // const freshData = getSpockeeData();
 }
 
-export const updateAllTreesState = () =>
-  // @ts-expect-error
-  updateTreesState(Object.values(spockeeTrees));
+export const updateAllTreesState = (spockeeData?: SpockeeData) =>
+  updateTreesState(Object.values(spockeeTrees))(
+    spockeeData || getSpockeeData()
+  );
 
 // export const getSpockeeData = async (): Promise<SpockeeData> =>
 //   JSON.parse(await cliSendAction("code")) as SpockeeData;

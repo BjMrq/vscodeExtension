@@ -1,8 +1,12 @@
 /* eslint-disable class-methods-use-this */
 // eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
+import { InstalledApplication } from "../installedApplication/installedApplicationElement";
+import { SpockeeData } from "../types/data";
 
 export class SpockeeCLITree implements vscode.TreeDataProvider<any> {
+  constructor(private spockeeData: SpockeeData) {}
+
   private _onDidChangeTreeData: vscode.EventEmitter<
     InstalledApplication | undefined | null | void
   > = new vscode.EventEmitter<InstalledApplication | undefined | null | void>();
