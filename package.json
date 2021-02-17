@@ -18,7 +18,8 @@
 		"onView:spockeeExplorer",
 		"onView:spockeeDockerGroup",
 		"onView:installedApplications",
-		"onView:spockeeApplications"
+		"onView:spockeeApplications",
+		"onStartupFinished"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -68,6 +69,10 @@
 				{
 					"command": "spockeeApp.openInCode",
 					"when": "view == installedApplications && viewItem == installedApplication"
+				},
+				{
+					"command": "spockeeApp.install",
+					"when": "view == spockeeApplications && viewItem == spockeeApplication"
 				}
 			]
 		},
@@ -81,6 +86,11 @@
 				"command": "spockeeApp.openInCode",
 				"title": "Open in code",
 				"icon": "$(code)"
+			},
+			{
+				"command": "spockeeApp.install",
+				"title": "Install",
+				"icon": "$(install)"
 			}
 		]
 	},
