@@ -7,9 +7,12 @@ const asyncSpawn = promisify(exec);
 export const cliSendActionAsync = async (
   ...cliArguments: string[]
 ): Promise<string> => {
-  const messageCli = await asyncSpawn(`spockee ${cliArguments.join(" ")}`, {
-    env: { ...process.env, SPOCKEE_ROOT: spockeeRoot },
-  });
+  const messageCli = await asyncSpawn(
+    `spockee ${cliArguments.join(" ")} --code`,
+    {
+      env: { ...process.env, SPOCKEE_ROOT: spockeeRoot },
+    }
+  );
 
   if (messageCli.stdout) return messageCli.stdout;
 
@@ -20,7 +23,7 @@ export const cliSendActionAsync = async (
 
 export const cliSendActionSync = (...cliArguments: string[]): string =>
   String.fromCharCode(
-    ...((spawnSync("spockee", cliArguments, {
+    ...((spawnSync("spockee", [...cliArguments, "--code"], {
       env: { ...process.env, SPOCKEE_ROOT: spockeeRoot },
     }).stdout as unknown) as number[])
   );

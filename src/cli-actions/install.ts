@@ -5,7 +5,7 @@
 import { ProgressLocation, window } from "vscode";
 import { Application } from "../spockeeApplications/applicationElement";
 import { cliSendActionAsync } from "../utils/cli";
-import { updateAllTreesState } from "../utils/data";
+import { updateApplicationTreesState } from "../utils/data";
 
 export const installApplication = async ({
   applicationData: { folder },
@@ -34,7 +34,7 @@ export const installApplication = async ({
 
       await cliSendActionAsync("git", "install", folder);
 
-      updateAllTreesState();
+      updateApplicationTreesState();
 
       return new Promise<void>((resolve) => {
         resolve();

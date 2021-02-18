@@ -16,6 +16,8 @@
 	],
 	"activationEvents": [
 		"onView:spockeeExplorer",
+		"onView:spockeeCli",
+		"onView:spockeeDockerState",
 		"onView:spockeeDockerGroup",
 		"onView:installedApplications",
 		"onView:spockeeApplications",
@@ -36,7 +38,11 @@
 			"spockeeExplorer": [
 				{
 					"id": "spockeeCli",
-					"name": "CLI"
+					"name": "CLI commands"
+				},
+				{
+					"id": "spockeeDockerState",
+					"name": "Spockee State"
 				},
 				{
 					"id": "spockeeDockerGroup",
@@ -55,12 +61,17 @@
 		"menus": {
 			"view/title": [
 				{
-					"command": "spockeeData.refreshEntry",
+					"command": "spockeeStateData.refreshEntry",
+					"when": "view == spockeeDockerState",
+					"group": "navigation"
+				},
+				{
+					"command": "spockeeApplicationData.refreshEntry",
 					"when": "view == spockeeApplications",
 					"group": "navigation"
 				},
 				{
-					"command": "spockeeData.refreshEntry",
+					"command": "spockeeApplicationData.refreshEntry",
 					"when": "view == installedApplications",
 					"group": "navigation"
 				}
@@ -78,7 +89,12 @@
 		},
 		"commands": [
 			{
-				"command": "spockeeData.refreshEntry",
+				"command": "spockeeApplicationData.refreshEntry",
+				"title": "Refresh",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "spockeeStateData.refreshEntry",
 				"title": "Refresh",
 				"icon": "$(refresh)"
 			},

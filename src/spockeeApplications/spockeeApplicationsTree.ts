@@ -1,12 +1,17 @@
 /* eslint-disable class-methods-use-this */
 // eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
-import { SpockeeData } from "../types/data";
+import { SpockeeApplication } from "../types/application";
+import { SpockeeApplicationData } from "../types/data";
 import { Application } from "./applicationElement";
 
 export class SpockeeApplicationsTree
   implements vscode.TreeDataProvider<Application> {
-  constructor(private spockeeData: SpockeeData) {}
+  private spockeeApplications: SpockeeApplication[];
+
+  constructor(spockeeApplicationData: SpockeeApplicationData) {
+    this.spockeeApplications = spockeeApplicationData.applicationList;
+  }
 
   private _onDidChangeTreeData: vscode.EventEmitter<
     Application | undefined | null | void
@@ -17,8 +22,8 @@ export class SpockeeApplicationsTree
     // eslint-disable-next-line no-invalid-this
   > = this._onDidChangeTreeData.event;
 
-  refreshWith(spockeeData: SpockeeData) {
-    this.spockeeData = spockeeData;
+  refreshWith(spockeeApplicationData: SpockeeApplicationData) {
+    this.spockeeApplications = spockeeApplicationData.applicationList;
     this._onDidChangeTreeData.fire();
   }
 
@@ -28,7 +33,7 @@ export class SpockeeApplicationsTree
 
   getChildren(): Thenable<any[]> {
     return Promise.resolve(
-      this.spockeeData.applicationList
+      this.spockeeApplications
         .filter((application) => !application.isInstalled)
         .map((application) => new Application(application))
     );

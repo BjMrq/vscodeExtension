@@ -1,9 +1,19 @@
+import { dataType } from "../config/constants";
 import { SpockeeApplication } from "./application";
-import { SpockeeDockerGroup } from "./docker";
-import { SpockeeState } from "./state";
+import { CliCommand } from "./command";
+import { SpockeeDockerGroup, StateContainerData } from "./docker";
 
-export type SpockeeData = {
-  applicationList: SpockeeApplication[];
-  spockeeState: SpockeeState;
-  dockerGroups: SpockeeDockerGroup[];
+export type SpockeeStateData = {
+  containerGroup: SpockeeDockerGroup;
+  runningDockerGroup: string;
+  containersState: StateContainerData[];
 };
+
+export type SpockeeApplicationData = {
+  applicationList: SpockeeApplication[];
+  dockerGroups: SpockeeDockerGroup[];
+  cliCommands: CliCommand[];
+};
+
+export type DataTypes = typeof dataType;
+export type PossibleDataType = keyof DataTypes;

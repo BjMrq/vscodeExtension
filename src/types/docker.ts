@@ -7,3 +7,8 @@ export type SpockeeDockerGroup = {
   containers: string[];
   applications: SpockeeApplication[];
 };
+
+export type StateContainerData = {
+  containerName: string;
+  isRunning: boolean;
+};

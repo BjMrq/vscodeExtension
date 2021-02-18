@@ -2,7 +2,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { SpockeeDockerGroup } from "../types/docker";
-import { DockerContainer } from "./DockerContainer";
+import { DockerContainer } from "./dockerContainer";
 
 export class DockerGroup extends vscode.TreeItem {
   iconPath = {

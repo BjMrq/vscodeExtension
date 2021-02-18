@@ -1,15 +1,38 @@
 import { SpockeeCLITree } from "./cli/spockeeCliTree";
-import { initSpockeeData } from "./config/constants";
+import { initSpockeeData, initSpockeeStateData } from "./config/constants";
 import { SpockeeDockerGroupTree } from "./docker/spockeeDockerTree";
 import { InstalledApplicationsTree } from "./installedApplication/installedApplicationsTree";
 import { SpockeeApplicationsTree } from "./spockeeApplications/spockeeApplicationsTree";
+import { SpockeeStateTree } from "./state/spockeeStateTree";
+
+export const dataTreeTypes = {
+  application: "application",
+  state: "state",
+};
 
 export const spockeeTrees = {
-  dockerGroups: new SpockeeDockerGroupTree(initSpockeeData),
+  cliActions: {
+    tree: new SpockeeCLITree(initSpockeeData),
+    dataSourceType: dataTreeTypes.application,
+  },
 
-  installedApplications: new InstalledApplicationsTree(initSpockeeData),
+  spockeeState: {
+    tree: new SpockeeStateTree(initSpockeeStateData),
+    dataSourceType: dataTreeTypes.state,
+  },
 
-  spockeeApplications: new SpockeeApplicationsTree(initSpockeeData),
+  dockerGroups: {
+    tree: new SpockeeDockerGroupTree(initSpockeeData),
+    dataSourceType: dataTreeTypes.application,
+  },
 
-  cliActions: new SpockeeCLITree(initSpockeeData),
+  installedApplications: {
+    tree: new InstalledApplicationsTree(initSpockeeData),
+    dataSourceType: dataTreeTypes.application,
+  },
+
+  spockeeApplications: {
+    tree: new SpockeeApplicationsTree(initSpockeeData),
+    dataSourceType: dataTreeTypes.application,
+  },
 };

@@ -1,15 +1,17 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable class-methods-use-this */
 // eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
-import { SpockeeData } from "../types/data";
-import { DockerContainer } from "./DockerContainer";
-import { DockerGroup } from "./DockerGroup";
+import { SpockeeApplicationData } from "../types/data";
+import { SpockeeDockerGroup } from "../types/docker";
+import { DockerContainer } from "./dockerContainer";
+import { DockerGroup } from "./dockerGroup";
 
 export class SpockeeDockerGroupTree
   implements vscode.TreeDataProvider<DockerGroup | DockerContainer> {
-  constructor(private spockeeData: SpockeeData) {}
+  private spockeeDockerGroups: SpockeeDockerGroup[];
+
+  constructor(spockeeApplicationData: SpockeeApplicationData) {
+    this.spockeeDockerGroups = spockeeApplicationData.dockerGroups;
+  }
 
   private _onDidChangeTreeData: vscode.EventEmitter<
     DockerGroup | DockerContainer | undefined | null | void
@@ -22,8 +24,8 @@ export class SpockeeDockerGroupTree
     // eslint-disable-next-line no-invalid-this
   > = this._onDidChangeTreeData.event;
 
-  refreshWith(spockeeData: SpockeeData) {
-    this.spockeeData = spockeeData;
+  refreshWith(spockeeApplicationData: SpockeeApplicationData) {
+    this.spockeeDockerGroups = spockeeApplicationData.dockerGroups;
     this._onDidChangeTreeData.fire();
   }
 
@@ -36,7 +38,7 @@ export class SpockeeDockerGroupTree
   ): Thenable<DockerGroup[] | DockerContainer[]> {
     if (element?.children) return Promise.resolve(element.children);
 
-    const groupAndContainers = this.spockeeData.dockerGroups.map(
+    const groupAndContainers = this.spockeeDockerGroups.map(
       (dockerGroup) =>
         new DockerGroup(
           dockerGroup,

@@ -4,49 +4,65 @@ import * as vscode from "vscode";
 import { openInCode } from "./actions/openInCode";
 import { installApplication } from "./cli-actions/install";
 import { spockeeTrees } from "./trees";
-import { getSpockeeData, updateAllTreesState } from "./utils/data";
+import {
+  getSpockeeApplicationData,
+  getSpockeeStateData,
+  updateApplicationTreesState,
+  updateStateTreesState,
+} from "./utils/data";
 
 const {
-  dockerGroups,
-  cliActions,
-  spockeeApplications,
-  installedApplications,
+  dockerGroups: { tree: dockerGroupsTree },
+  cliActions: { tree: cliActionsTree },
+  spockeeApplications: { tree: spockeeApplicationsTree },
+  installedApplications: { tree: installedApplicationsTree },
+  spockeeState: { tree: spockeeStateTree },
 } = spockeeTrees;
 
 // eslint-disable-next-line import/no-unused-modules
 export function activate() {
-  const spockeeData = getSpockeeData();
+  const spockeeApplicationData = getSpockeeApplicationData();
+  const spockeeStateData = getSpockeeStateData();
 
-  if (spockeeData.applicationList) {
-    updateAllTreesState(spockeeData);
+  if (spockeeApplicationData.applicationList) {
+    updateApplicationTreesState(spockeeApplicationData);
+    updateStateTreesState(spockeeStateData);
 
     // CLI
     vscode.window.createTreeView("spockeeCli", {
-      treeDataProvider: cliActions,
+      treeDataProvider: cliActionsTree,
+    });
+
+    // State
+    vscode.window.createTreeView("spockeeDockerState", {
+      treeDataProvider: spockeeStateTree,
     });
 
     // Docker
-
     vscode.window.createTreeView("spockeeDockerGroup", {
-      treeDataProvider: dockerGroups,
+      treeDataProvider: dockerGroupsTree,
     });
 
     // Installed applications
-
     vscode.window.createTreeView("installedApplications", {
-      treeDataProvider: installedApplications,
+      treeDataProvider: installedApplicationsTree,
     });
 
     // All spockee applications
     vscode.window.createTreeView("spockeeApplications", {
-      treeDataProvider: spockeeApplications,
+      treeDataProvider: spockeeApplicationsTree,
     });
 
     // Commands
     // Refresh data
     vscode.commands.registerCommand(
-      "spockeeData.refreshEntry",
-      updateAllTreesState
+      "spockeeApplicationData.refreshEntry",
+      updateApplicationTreesState
+    );
+
+    vscode.commands.registerCommand(
+      "spockeeStateData.refreshEntry",
+      updateStateTreesState
     );
 
     // Open in code
