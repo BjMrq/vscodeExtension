@@ -51,8 +51,10 @@
         "import/prefer-default-export": "off",
         "import/no-unused-modules": "error",
         "import/max-dependencies": "off",
+        "import/no-unresolved": "off",
         "class-methods-use-this": "off",
-        // "@typescript-eslint/no-duplicate-imports": "off",
+        "promise/avoid-new": "off",
+        "no-void": "off",
         // Eslint General
         "max-len": [
             "warn",
@@ -86,17 +88,13 @@
         "lines-around-comment": "off",
         "multiline-comment-style": "off",
         // Typescript
+        "@typescript-eslint/require-await": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/naming-convention": "off",
         "@typescript-eslint/no-magic-numbers": "off",
         "@typescript-eslint/indent": "off",
         "@typescript-eslint/comma-dangle": "off",
-        "@typescript-eslint/no-floating-promises": [
-            "error",
-            {
-                "ignoreIIFE": true
-            }
-        ],
+        "@typescript-eslint/no-floating-promises": "off",
         "@typescript-eslint/no-shadow": [
             "error",
             {

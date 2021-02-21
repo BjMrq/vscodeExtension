@@ -1,14 +1,14 @@
 // eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
-import * as path from "path";
-import { SpockeeDockerGroup } from "../types/docker";
+import { SpockeeDockerGroup } from "../../types/docker";
 import { StateContainer } from "./stateContainer";
+import { getMediaPath } from "../../utils/getMedia";
 
 export class DockerStateGroup extends vscode.TreeItem {
   iconPath = {
-    dark: path.join(__filename, "..", "..", "..", "media", "light_docker.svg"),
+    dark: getMediaPath("light_docker.svg"),
 
-    light: path.join(__filename, "..", "..", "..", "media", "dark_docker.svg"),
+    light: getMediaPath("dark_docker.svg"),
   };
 
   contextValue = "dockerStateGroup";

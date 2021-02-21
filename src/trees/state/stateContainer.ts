@@ -1,21 +1,16 @@
 // eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
-import * as path from "path";
-import { StateContainerData } from "../types/docker";
+import { StateContainerData } from "../../types/docker";
+import { getMediaPath } from "../../utils/getMedia";
 
 export class StateContainer extends vscode.TreeItem {
-  iconPath = path.join(
-    __filename,
-    "..",
-    "..",
-    "..",
-    "media",
+  iconPath = getMediaPath(
     this.stateContainerData.isRunning
       ? "green_container.svg"
       : "red_container.svg"
   );
 
-  contextValue = "dockerContainer";
+  contextValue = "dockerStateContainer";
 
   constructor(public readonly stateContainerData: StateContainerData) {
     super(stateContainerData.containerName);

@@ -1,8 +1,7 @@
-/* eslint-disable import/no-unused-modules */
 // eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
-import { SpockeeStateData } from "../types/data";
-import { SpockeeDockerGroup, StateContainerData } from "../types/docker";
+import { SpockeeStateData } from "../../types/data";
+import { SpockeeDockerGroup, StateContainerData } from "../../types/docker";
 import { StateContainer } from "./stateContainer";
 import { DockerStateGroup } from "./stateDockerGroup";
 
@@ -47,9 +46,13 @@ export class SpockeeStateTree
       new DockerStateGroup(
         this.spockeeStateDockerGroup,
         this.spockeeStateContainers.map(
-          (container) => new StateContainer(container)
+          (container) =>
+            new StateContainer({
+              ...container,
+              dockerGroup: this.spockeeStateDockerGroup,
+            })
         ),
-        vscode.TreeItemCollapsibleState.Collapsed
+        vscode.TreeItemCollapsibleState.Expanded
       ),
     ]);
   }

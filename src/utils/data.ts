@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-// eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
 import { dataTreeTypes, spockeeTrees } from "../trees";
 import {
@@ -7,17 +6,43 @@ import {
   PossibleDataType,
   SpockeeApplicationData,
   SpockeeStateData,
+  SpockeeVersionData,
 } from "../types/data";
-import { cliSendActionSync } from "./cli";
+import { cliSendActionAsync } from "./cli";
 
-const getSpockeeData = <M extends PossibleDataType>(
+// const getSpockeeData = <M extends PossibleDataType>(
+//   dataType: M
+// ) => (): M extends DataTypes["applications"]
+//   ? SpockeeApplicationData
+//   : M extends DataTypes["state"]
+//   ? SpockeeStateData
+//   : M extends DataTypes["version"]
+//   ? SpockeeVersionData
+//   : never => {
+//   const cliResponse = cliSendActionSync("code", dataType);
+
+//   try {
+//     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+//     return JSON.parse(cliResponse);
+//   } catch {
+//     throw new Error(
+//       `Cli data could not been parsed, was expecting JSON instead received: ${cliResponse}`
+//     );
+//   }
+// };
+
+const getSpockeeAsyncData = <M extends PossibleDataType>(
   dataType: M
-) => (): M extends DataTypes["applications"]
-  ? SpockeeApplicationData
-  : M extends DataTypes["state"]
-  ? SpockeeStateData
-  : never => {
-  const cliResponse = cliSendActionSync("code", "--data", dataType);
+) => async (): Promise<
+  M extends DataTypes["applications"]
+    ? SpockeeApplicationData
+    : M extends DataTypes["state"]
+    ? SpockeeStateData
+    : M extends DataTypes["version"]
+    ? SpockeeVersionData
+    : never
+> => {
+  const cliResponse = await cliSendActionAsync("code", dataType);
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -29,22 +54,22 @@ const getSpockeeData = <M extends PossibleDataType>(
   }
 };
 
-export const getSpockeeApplicationData = getSpockeeData("applications");
+export const getSpockeeApplicationData = getSpockeeAsyncData("applications");
 
-export const getSpockeeStateData = getSpockeeData("state");
+export const getSpockeeStateData = getSpockeeAsyncData("state");
+
+export const getSpockeeVersionData = getSpockeeAsyncData("version");
 
 function updateTreesState(trees: vscode.TreeDataProvider<any>[]) {
   return (spockeeData: SpockeeApplicationData | SpockeeStateData) => {
     trees.forEach(function update(tree) {
-      console.log(tree);
       // @ts-expect-error
       tree.refreshWith(spockeeData);
     });
   };
-  // const freshData = getSpockeeApplicationData();
 }
 
-export const updateApplicationTreesState = (
+export const updateApplicationTreesState = async (
   spockeeData?: SpockeeApplicationData
 ) =>
   updateTreesState(
@@ -53,11 +78,11 @@ export const updateApplicationTreesState = (
         (treeInfo) => treeInfo.dataSourceType === dataTreeTypes.application
       )
       .map((treeInfo) => treeInfo.tree)
-  )(spockeeData || getSpockeeApplicationData());
+  )(spockeeData || (await getSpockeeApplicationData()));
 
-export const updateStateTreesState = (spockeeData?: SpockeeStateData) =>
+export const updateStateTreesState = async (spockeeData?: SpockeeStateData) =>
   updateTreesState(
     Object.values(spockeeTrees)
       .filter((treeInfo) => treeInfo.dataSourceType === dataTreeTypes.state)
       .map((treeInfo) => treeInfo.tree)
-  )(spockeeData || getSpockeeStateData());
+  )(spockeeData || (await getSpockeeStateData()));

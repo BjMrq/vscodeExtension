@@ -1,7 +1,6 @@
-// eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
-import { SpockeeApplicationData } from "../types/data";
-import { SpockeeDockerGroup } from "../types/docker";
+import { SpockeeApplicationData } from "../../types/data";
+import { SpockeeDockerGroup } from "../../types/docker";
 import { DockerContainer } from "./dockerContainer";
 import { DockerGroup } from "./dockerGroup";
 

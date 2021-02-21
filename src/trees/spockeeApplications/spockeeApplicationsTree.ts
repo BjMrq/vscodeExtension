@@ -1,8 +1,7 @@
-/* eslint-disable class-methods-use-this */
 // eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
-import { SpockeeApplication } from "../types/application";
-import { SpockeeApplicationData } from "../types/data";
+import { SpockeeApplication } from "../../types/application";
+import { SpockeeApplicationData } from "../../types/data";
 import { Application } from "./applicationElement";
 
 export class SpockeeApplicationsTree

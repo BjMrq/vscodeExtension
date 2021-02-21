@@ -7,7 +7,7 @@
 		"type": "git",
 		"url": "https://github.com/BjMrq/vscodeExtension"
 	},
-	"version": "0.0.2",
+	"version": "0.1.0",
 	"engines": {
 		"vscode": "^1.53.0"
 	},
@@ -16,11 +16,7 @@
 	],
 	"activationEvents": [
 		"onView:spockeeExplorer",
-		"onView:spockeeCli",
 		"onView:spockeeDockerState",
-		"onView:spockeeDockerGroup",
-		"onView:installedApplications",
-		"onView:spockeeApplications",
 		"onStartupFinished"
 	],
 	"main": "./out/extension.js",
@@ -61,9 +57,19 @@
 		"menus": {
 			"view/title": [
 				{
+					"command": "dockerState.cleanUp",
+					"when": "view == spockeeDockerState",
+					"group": "navigation@0"
+				},
+				{
+					"command": "dockerState.removeContainers",
+					"when": "view == spockeeDockerState",
+					"group": "navigation@1"
+				},
+				{
 					"command": "spockeeStateData.refreshEntry",
 					"when": "view == spockeeDockerState",
-					"group": "navigation"
+					"group": "navigation@2"
 				},
 				{
 					"command": "spockeeApplicationData.refreshEntry",
@@ -71,15 +77,63 @@
 					"group": "navigation"
 				},
 				{
+					"command": "spockeeInstalledApplications.cleanMerged",
+					"when": "view == installedApplications",
+					"group": "navigation@0"
+				},
+				{
+					"command": "spockeeInstalledApplications.pullChanges",
+					"when": "view == installedApplications",
+					"group": "navigation@1"
+				},
+				{
 					"command": "spockeeApplicationData.refreshEntry",
 					"when": "view == installedApplications",
-					"group": "navigation"
+					"group": "navigation@2"
 				}
 			],
 			"view/item/context": [
 				{
+					"command": "dockerStateGroup.attachLogs",
+					"when": "view == spockeeDockerState && viewItem == dockerStateGroup"
+				},
+				{
+					"command": "spockeeCli.runCommand",
+					"when": "view == spockeeCli && viewItem == cliCommand"
+				},
+				{
+					"command": "spockeeCli.runCommandWithArgument",
+					"when": "view == spockeeCli && viewItem == cliArgument"
+				},
+				{
+					"command": "dockerStateContainer.startShell",
+					"when": "view == spockeeDockerState && viewItem == dockerStateContainer"
+				},
+				{
+					"command": "dockerStateContainer.refreshDependencies",
+					"when": "view == spockeeDockerState && viewItem == dockerStateContainer"
+				},
+				{
+					"command": "dockerStateContainer.installDependency",
+					"when": "view == spockeeDockerState && viewItem == dockerStateContainer"
+				},
+				{
+					"command": "dockerStateContainer.attachLogs",
+					"when": "view == spockeeDockerState && viewItem == dockerStateContainer"
+				},
+				{
+					"command": "dockerGroup.startCompose",
+					"when": "view == spockeeDockerGroup && viewItem == dockerGroup"
+				},
+				{
 					"command": "spockeeApp.openInCode",
-					"when": "view == installedApplications && viewItem == installedApplication"
+					"when": "view == installedApplications && viewItem == installedApplication",
+					"group": "@0"
+				},
+				{
+					"command": "spockeeApp.uninstallApplication",
+					"when": "view == installedApplications && viewItem == installedApplication",
+					"group": "@1"
 				},
 				{
 					"command": "spockeeApp.install",
@@ -89,14 +143,79 @@
 		},
 		"commands": [
 			{
+				"command": "spockeeCli.runCommandWithArgument",
+				"title": "Run command with argument",
+				"icon": "$(terminal)"
+			},
+			{
+				"command": "spockeeInstalledApplications.pullChanges",
+				"title": "Pull changes",
+				"icon": "$(git-pull-request)"
+			},
+			{
+				"command": "spockeeInstalledApplications.cleanMerged",
+				"title": "Clean merged branches",
+				"icon": "$(clear-all)"
+			},
+			{
+				"command": "spockeeApp.uninstallApplication",
+				"title": "Uninstall",
+				"icon": "$(trash)"
+			},
+			{
+				"command": "dockerState.cleanUp",
+				"title": "Basic clean-up",
+				"icon": "$(trash)"
+			},
+			{
+				"command": "dockerState.removeContainers",
+				"title": "Remove containers",
+				"icon": "$(stop)"
+			},
+			{
+				"command": "dockerStateGroup.attachLogs",
+				"title": "Attach logs",
+				"icon": "$(terminal)"
+			},
+			{
+				"command": "spockeeCli.runCommand",
+				"title": "Run root command",
+				"icon": "$(terminal)"
+			},
+			{
+				"command": "dockerStateContainer.refreshDependencies",
+				"title": "Refresh dependencies",
+				"icon": "$(sync~spin)"
+			},
+			{
+				"command": "dockerStateContainer.installDependency",
+				"title": "Install dependency",
+				"icon": "$(symbol-property)"
+			},
+			{
+				"command": "dockerStateContainer.attachLogs",
+				"title": "Attach logs",
+				"icon": "$(list-selection)"
+			},
+			{
+				"command": "dockerStateContainer.startShell",
+				"title": "Start shell",
+				"icon": "$(list-selection)"
+			},
+			{
+				"command": "dockerGroup.startCompose",
+				"title": "Start compose group",
+				"icon": "$(debug-start)"
+			},
+			{
 				"command": "spockeeApplicationData.refreshEntry",
 				"title": "Refresh",
-				"icon": "$(refresh)"
+				"icon": "$(refresh~spin)"
 			},
 			{
 				"command": "spockeeStateData.refreshEntry",
 				"title": "Refresh",
-				"icon": "$(refresh)"
+				"icon": "$(refresh~spin)"
 			},
 			{
 				"command": "spockeeApp.openInCode",
@@ -141,6 +260,7 @@
 		"@bjmrq/utils": "0.0.23",
 		"@types/ramda": "^0.27.38",
 		"dotenv": "^8.2.0",
+		"open": "^7.4.2",
 		"ramda": "^0.27.1",
 		"shelljs": "^0.8.4"
 	}

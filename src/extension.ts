@@ -1,82 +1,59 @@
 /* eslint-disable max-statements */
-// eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
-import { openInCode } from "./actions/openInCode";
-import { installApplication } from "./cli-actions/install";
-import { spockeeTrees } from "./trees";
+import { registerCommands } from "./commands";
+import { registerTrees } from "./trees";
+import { simpleExec } from "./utils/cli";
 import {
   getSpockeeApplicationData,
   getSpockeeStateData,
+  getSpockeeVersionData,
   updateApplicationTreesState,
   updateStateTreesState,
 } from "./utils/data";
 
-const {
-  dockerGroups: { tree: dockerGroupsTree },
-  cliActions: { tree: cliActionsTree },
-  spockeeApplications: { tree: spockeeApplicationsTree },
-  installedApplications: { tree: installedApplicationsTree },
-  spockeeState: { tree: spockeeStateTree },
-} = spockeeTrees;
-
 // eslint-disable-next-line import/no-unused-modules
-export function activate() {
-  const spockeeApplicationData = getSpockeeApplicationData();
-  const spockeeStateData = getSpockeeStateData();
+export async function activate() {
+  const spockeeApplicationData = await getSpockeeApplicationData();
 
   if (spockeeApplicationData.applicationList) {
-    updateApplicationTreesState(spockeeApplicationData);
-    updateStateTreesState(spockeeStateData);
+    registerTrees();
 
-    // CLI
-    vscode.window.createTreeView("spockeeCli", {
-      treeDataProvider: cliActionsTree,
-    });
+    registerCommands();
 
-    // State
-    vscode.window.createTreeView("spockeeDockerState", {
-      treeDataProvider: spockeeStateTree,
-    });
+    await updateApplicationTreesState(spockeeApplicationData);
 
-    // Docker
-    vscode.window.createTreeView("spockeeDockerGroup", {
-      treeDataProvider: dockerGroupsTree,
-    });
+    const spockeeStateData = await getSpockeeStateData();
 
-    // Installed applications
-    vscode.window.createTreeView("installedApplications", {
-      treeDataProvider: installedApplicationsTree,
-    });
+    await updateStateTreesState(spockeeStateData);
 
-    // All spockee applications
-    vscode.window.createTreeView("spockeeApplications", {
-      treeDataProvider: spockeeApplicationsTree,
-    });
+    const { cliVersion } = await getSpockeeVersionData();
 
-    // Commands
-    // Refresh data
-    vscode.commands.registerCommand(
-      "spockeeApplicationData.refreshEntry",
-      updateApplicationTreesState
-    );
+    if (cliVersion.needUpdate) {
+      const userWantsToUpdate = await vscode.window.showInformationMessage(
+        "An update is available for @spockee/cli",
+        "Update",
+        "Cancel"
+      );
 
-    vscode.commands.registerCommand(
-      "spockeeStateData.refreshEntry",
-      updateStateTreesState
-    );
+      if (userWantsToUpdate === "Update") {
+        vscode.window.showInformationMessage(
+          `What is new: \n\n ${cliVersion.changelog
+            .split(",")
+            .map((change) => change.replace(/^ /u, ""))
+            .map((change, index) => `  ${index + 1}. ${change}`)
+            .join("\n\n")}`,
+          { modal: true }
+        );
 
-    // Open in code
-    vscode.commands.registerCommand("spockeeApp.openInCode", openInCode);
-    // Install
-    vscode.commands.registerCommand("spockeeApp.install", installApplication);
+        await simpleExec("npm i -g @spockee/cli");
+      }
+    }
   } else {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     vscode.window.showErrorMessage(
       "You do not have the @spockee/cli installed"
     );
   }
 }
 
-// this method is called when your extension is deactivated
 // eslint-disable-next-line import/no-unused-modules
 export function deactivate() {}

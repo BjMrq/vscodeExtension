@@ -1,14 +1,9 @@
 // eslint-disable-next-line import/no-unresolved
-import * as vscode from "vscode";
-import * as path from "path";
-import { SpockeeApplication } from "../types/application";
+import { TreeItem, ThemeIcon } from "vscode";
+import { SpockeeApplication } from "../../types/application";
 
-export class Application extends vscode.TreeItem {
-  iconPath = {
-    dark: path.join(__filename, "..", "..", "..", "media", "light_git.svg"),
-
-    light: path.join(__filename, "..", "..", "..", "media", "dark_git.svg"),
-  };
+export class Application extends TreeItem {
+  iconPath = new ThemeIcon("package");
 
   contextValue = "spockeeApplication";
 

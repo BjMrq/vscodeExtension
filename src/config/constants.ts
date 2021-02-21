@@ -10,10 +10,15 @@ const { SPOCKEE_ROOT, SPOCKEE_TEST, IS_DEV } = process.env;
 
 export const spockeeRoot: string = IS_DEV ? SPOCKEE_TEST! : SPOCKEE_ROOT!;
 
+export const spockeeEnvironments = {
+  ...process.env,
+  SPOCKEE_ROOT: spockeeRoot,
+};
+
 export const initSpockeeData = {
   applicationList: [] as SpockeeApplication[],
   dockerGroups: [] as SpockeeDockerGroup[],
-  cliCommands: [] as CliCommand[],
+  cliCommands: {} as Record<CliCommand["name"], CliCommand>,
 } as SpockeeApplicationData;
 
 export const initSpockeeStateData = {
@@ -25,4 +30,5 @@ export const initSpockeeStateData = {
 export const dataType = {
   applications: "applications",
   state: "state",
+  version: "version",
 } as const;

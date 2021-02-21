@@ -1,9 +1,11 @@
-import { SpockeeCLITree } from "./cli/spockeeCliTree";
+// eslint-disable-next-line import/no-unresolved
+import { window } from "vscode";
+import { SpockeeCLITree } from "./trees/cli/spockeeCliTree";
 import { initSpockeeData, initSpockeeStateData } from "./config/constants";
-import { SpockeeDockerGroupTree } from "./docker/spockeeDockerTree";
-import { InstalledApplicationsTree } from "./installedApplication/installedApplicationsTree";
-import { SpockeeApplicationsTree } from "./spockeeApplications/spockeeApplicationsTree";
-import { SpockeeStateTree } from "./state/spockeeStateTree";
+import { SpockeeDockerGroupTree } from "./trees/docker/spockeeDockerTree";
+import { InstalledApplicationsTree } from "./trees/installedApplication/installedApplicationsTree";
+import { SpockeeApplicationsTree } from "./trees/spockeeApplications/spockeeApplicationsTree";
+import { SpockeeStateTree } from "./trees/state/spockeeStateTree";
 
 export const dataTreeTypes = {
   application: "application",
@@ -35,4 +37,31 @@ export const spockeeTrees = {
     tree: new SpockeeApplicationsTree(initSpockeeData),
     dataSourceType: dataTreeTypes.application,
   },
+};
+
+export const registerTrees = () => {
+  // CLI
+  window.createTreeView("spockeeCli", {
+    treeDataProvider: spockeeTrees.cliActions.tree,
+  });
+
+  // State
+  window.createTreeView("spockeeDockerState", {
+    treeDataProvider: spockeeTrees.spockeeState.tree,
+  });
+
+  // Docker
+  window.createTreeView("spockeeDockerGroup", {
+    treeDataProvider: spockeeTrees.dockerGroups.tree,
+  });
+
+  // Installed applications
+  window.createTreeView("installedApplications", {
+    treeDataProvider: spockeeTrees.installedApplications.tree,
+  });
+
+  // All spockee applications
+  window.createTreeView("spockeeApplications", {
+    treeDataProvider: spockeeTrees.spockeeApplications.tree,
+  });
 };

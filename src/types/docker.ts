@@ -11,4 +11,5 @@ export type SpockeeDockerGroup = {
 export type StateContainerData = {
   containerName: string;
   isRunning: boolean;
+  dockerGroup: SpockeeDockerGroup;
 };

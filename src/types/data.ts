@@ -1,6 +1,6 @@
 import { dataType } from "../config/constants";
 import { SpockeeApplication } from "./application";
-import { CliCommand } from "./command";
+import { Commands } from "./command";
 import { SpockeeDockerGroup, StateContainerData } from "./docker";
 
 export type SpockeeStateData = {
@@ -12,7 +12,16 @@ export type SpockeeStateData = {
 export type SpockeeApplicationData = {
   applicationList: SpockeeApplication[];
   dockerGroups: SpockeeDockerGroup[];
-  cliCommands: CliCommand[];
+  cliCommands: Commands;
+};
+
+export type SpockeeVersionData = {
+  cliVersion: {
+    currentVersion: string;
+    availableVersion: string;
+    changelog: string;
+    needUpdate: boolean;
+  };
 };
 
 export type DataTypes = typeof dataType;
