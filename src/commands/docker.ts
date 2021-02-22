@@ -171,7 +171,7 @@ export const startDockerComposeGroup = async ({
     `${dockerGroupCommand} logs -f --tail="600"`,
     false,
     async () => {
-      await simpleExec(dockerGroupCommand, "down");
+      // await simpleExec(dockerGroupCommand, "down");
       await updateStateTreesState();
     }
   );

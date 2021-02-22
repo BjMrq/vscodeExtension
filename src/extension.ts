@@ -1,15 +1,13 @@
-/* eslint-disable max-statements */
 import * as vscode from "vscode";
 import { registerCommands } from "./commands";
 import { registerTrees } from "./trees";
-import { simpleExec } from "./utils/cli";
 import {
   getSpockeeApplicationData,
   getSpockeeStateData,
-  getSpockeeVersionData,
   updateApplicationTreesState,
   updateStateTreesState,
 } from "./utils/data";
+import { checkForUpdates } from "./utils/update";
 
 // eslint-disable-next-line import/no-unused-modules
 export async function activate() {
@@ -26,28 +24,7 @@ export async function activate() {
 
     await updateStateTreesState(spockeeStateData);
 
-    const { cliVersion } = await getSpockeeVersionData();
-
-    if (cliVersion.needUpdate) {
-      const userWantsToUpdate = await vscode.window.showInformationMessage(
-        "An update is available for @spockee/cli",
-        "Update",
-        "Cancel"
-      );
-
-      if (userWantsToUpdate === "Update") {
-        vscode.window.showInformationMessage(
-          `What is new: \n\n ${cliVersion.changelog
-            .split(",")
-            .map((change) => change.replace(/^ /u, ""))
-            .map((change, index) => `  ${index + 1}. ${change}`)
-            .join("\n\n")}`,
-          { modal: true }
-        );
-
-        await simpleExec("npm i -g @spockee/cli");
-      }
-    }
+    await checkForUpdates();
   } else {
     vscode.window.showErrorMessage(
       "You do not have the @spockee/cli installed"

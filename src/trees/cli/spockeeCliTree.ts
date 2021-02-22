@@ -35,7 +35,7 @@ export class SpockeeCLITree implements vscode.TreeDataProvider<Command> {
     return Promise.resolve(
       Object.values(this.cliCommands)
         .filter((command) => command.code)
-        .filter((command) => command.name !== "start")
+        // .filter((command) => command.name !== "start")
         .map(
           (command) =>
             new Command(

@@ -1,11 +1,28 @@
+import { window } from "vscode";
 import { Argument } from "../trees/cli/Arguments";
 import { Command } from "../trees/cli/Command";
 import { createTask } from "../utils/task";
 
 export const executeCommand = async ({
-  cliCommand,
+  cliCommand: {
+    name: commandName,
+    arguments: commandArguments,
+    argumentRequired,
+  },
 }: Command): Promise<void> => {
-  await createTask(String(cliCommand.name), `spockee ${cliCommand.name}`, true);
+  if (argumentRequired) {
+    const selectedArgument = (await window.showQuickPick(
+      Object.values(commandArguments).map((argument) => argument.value)
+    )) as string;
+
+    await createTask(
+      `${commandName}-${selectedArgument}`,
+      `spockee ${commandName} ${selectedArgument}`,
+      true
+    );
+  } else {
+    await createTask(String(commandName), `spockee ${commandName}`, true);
+  }
 };
 
 export const executeCommandWithArgument = async ({
