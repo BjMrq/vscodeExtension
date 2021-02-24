@@ -19,6 +19,7 @@ import {
   dockerStopAndRemove,
   installDependencyDockerContainerState,
   openComposeConfig,
+  openComposeVariable,
   refreshDependenciesDockerContainerState,
   startDockerComposeGroup,
   startShellDockerContainerState,
@@ -78,6 +79,7 @@ export const registerCommands = () => {
   // Docker
   commands.registerCommand("dockerGroup.openComposeConfig", openComposeConfig);
   commands.registerCommand("dockerGroup.startCompose", startDockerComposeGroup);
+  commands.registerCommand("dockerGroup.envConfig", openComposeVariable);
 
   // State
 

@@ -54,7 +54,7 @@ export const installDependencyDockerContainerState = async ({
   })) as string;
 
   await createTask(
-    `${containerName} refresh dependencies`,
+    `${containerName} install ${dependencyToInstall}`,
     `spockee docker ${containerName} install ${dependencyToInstall}`,
     true
   );
@@ -177,4 +177,8 @@ export const startDockerComposeGroup = async ({
 
 export const openComposeConfig = async ({ dockerGroupData }: DockerGroup) => {
   await simpleExec(`code ${dockerGroupData.file}`);
+};
+
+export const openComposeVariable = async () => {
+  await simpleExec("code .env");
 };

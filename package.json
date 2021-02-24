@@ -7,7 +7,7 @@
 		"type": "git",
 		"url": "https://github.com/BjMrq/vscodeExtension"
 	},
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"engines": {
 		"vscode": "^1.53.0"
 	},
@@ -33,7 +33,7 @@
 			"spockeeExplorer": [
 				{
 					"id": "spockeeCli",
-					"name": "CLI"
+					"name": "CLI Commands"
 				},
 				{
 					"id": "spockeeDockerState",
@@ -56,14 +56,19 @@
 		"menus": {
 			"view/title": [
 				{
-					"command": "spockeeCli.stopSpockee",
+					"command": "spockeeCli.editSettings",
 					"when": "view == spockeeCli",
 					"group": "navigation@0"
 				},
 				{
-					"command": "spockeeCli.startSpockee",
+					"command": "spockeeCli.stopSpockee",
 					"when": "view == spockeeCli",
 					"group": "navigation@1"
+				},
+				{
+					"command": "spockeeCli.startSpockee",
+					"when": "view == spockeeCli",
+					"group": "navigation@2"
 				},
 				{
 					"command": "dockerState.cleanUp",
@@ -74,6 +79,11 @@
 					"command": "dockerState.removeContainers",
 					"when": "view == spockeeDockerState",
 					"group": "navigation@1"
+				},
+				{
+					"command": "dockerGroup.envConfig",
+					"when": "view == spockeeDockerGroup",
+					"group": "navigation@0"
 				},
 				{
 					"command": "spockeeStateData.refreshEntry",
@@ -164,7 +174,7 @@
 			{
 				"command": "spockeeCli.editSettings",
 				"title": "Edit Spockee settings",
-				"icon": "$(settings-gear)"
+				"icon": "$(gear)"
 			},
 			{
 				"command": "spockeeCli.startSpockee",
@@ -173,7 +183,7 @@
 			},
 			{
 				"command": "spockeeCli.stopSpockee",
-				"title": "Start Spockee",
+				"title": "Stop Spockee",
 				"icon": "$(debug-stop)"
 			},
 			{
@@ -235,6 +245,11 @@
 				"command": "dockerStateContainer.startShell",
 				"title": "Start shell",
 				"icon": "$(list-selection)"
+			},
+			{
+				"command": "dockerGroup.envConfig",
+				"title": "Edit Docker variables",
+				"icon": "$(gear)"
 			},
 			{
 				"command": "dockerGroup.startCompose",
