@@ -2,6 +2,7 @@ import { ProgressLocation, window } from "vscode";
 import { settingsFilePath } from "../config/constants";
 import { Argument } from "../trees/cli/Arguments";
 import { Command } from "../trees/cli/Command";
+import { SpockeeSettingsOptions } from "../types/settings";
 import { cliSendActionAsync, simpleExec } from "../utils/cli";
 import { updateStateTreesState } from "../utils/data";
 import { getSpockeeSettings } from "../utils/settings";
@@ -40,14 +41,17 @@ export const executeCommandWithArgument = async ({
 };
 
 export const startSpockee = async (): Promise<void> => {
-  const selectedSystem = (await window.showQuickPick([
-    "android",
-    "ios",
-  ])) as string;
+  const spockeeSettings = (await getSpockeeSettings()) as SpockeeSettingsOptions;
+
+  const selectedSystem = ["android", "ios"].includes(
+    spockeeSettings?.emulatorType
+  )
+    ? spockeeSettings?.emulatorType
+    : ((await window.showQuickPick(["android", "ios"])) as string);
 
   const startFlags = (await window.showInputBox({
     prompt: "Enter flags to include for start command",
-    value: await getSpockeeSettings("startFlags"),
+    value: spockeeSettings?.startFlags || "",
   })) as string;
 
   await createTask(

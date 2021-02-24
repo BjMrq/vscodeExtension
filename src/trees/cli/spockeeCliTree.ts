@@ -3,8 +3,14 @@ import { Commands } from "../../types/command";
 import { SpockeeApplicationData } from "../../types/data";
 import { Argument } from "./Arguments";
 import { Command } from "./Command";
+import { CommandsSeparator } from "./CommandsSeparator";
+import { SettingsSeparator } from "./SettingsSeparator";
 
-export class SpockeeCLITree implements vscode.TreeDataProvider<Command> {
+export class SpockeeCLITree
+  implements
+    vscode.TreeDataProvider<
+      Command | Argument | SettingsSeparator | CommandsSeparator
+    > {
   private cliCommands: Commands;
 
   constructor(spockeeApplicationData: SpockeeApplicationData) {
@@ -12,11 +18,23 @@ export class SpockeeCLITree implements vscode.TreeDataProvider<Command> {
   }
 
   private _onDidChangeTreeData: vscode.EventEmitter<
-    Command | undefined | null | void
+    | Command
+    | Argument
+    | SettingsSeparator
+    | CommandsSeparator
+    | undefined
+    | null
+    | void
   > = new vscode.EventEmitter<Command | undefined | null | void>();
 
   readonly onDidChangeTreeData: vscode.Event<
-    Command | undefined | null | void
+    | Command
+    | Argument
+    | SettingsSeparator
+    | CommandsSeparator
+    | undefined
+    | null
+    | void
     // eslint-disable-next-line no-invalid-this
   > = this._onDidChangeTreeData.event;
 
@@ -29,13 +47,15 @@ export class SpockeeCLITree implements vscode.TreeDataProvider<Command> {
     return element;
   }
 
-  getChildren(element: Command): Thenable<any[]> {
+  getChildren(
+    element: Command
+  ): Thenable<[SettingsSeparator, ...Command[]] | Argument[]> {
     if (element?.children) return Promise.resolve(element.children);
 
-    return Promise.resolve(
-      Object.values(this.cliCommands)
+    return Promise.resolve([
+      new SettingsSeparator(),
+      ...Object.values(this.cliCommands)
         .filter((command) => command.code)
-        // .filter((command) => command.name !== "start")
         .map(
           (command) =>
             new Command(
@@ -52,7 +72,7 @@ export class SpockeeCLITree implements vscode.TreeDataProvider<Command> {
               vscode.TreeItemCollapsibleState.Collapsed
             )
         )
-        .filter((command) => command.children.length !== 0)
-    );
+        .filter((command) => command.children.length !== 0),
+    ]);
   }
 }

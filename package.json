@@ -7,7 +7,7 @@
 		"type": "git",
 		"url": "https://github.com/BjMrq/vscodeExtension"
 	},
-	"version": "0.1.3",
+	"version": "0.1.5",
 	"engines": {
 		"vscode": "^1.53.0"
 	},
@@ -33,7 +33,7 @@
 			"spockeeExplorer": [
 				{
 					"id": "spockeeCli",
-					"name": "CLI commands"
+					"name": "CLI"
 				},
 				{
 					"id": "spockeeDockerState",
@@ -56,19 +56,14 @@
 		"menus": {
 			"view/title": [
 				{
-					"command": "spockeeCli.editSettings",
+					"command": "spockeeCli.stopSpockee",
 					"when": "view == spockeeCli",
 					"group": "navigation@0"
 				},
 				{
-					"command": "spockeeCli.stopSpockee",
-					"when": "view == spockeeCli",
-					"group": "navigation@1"
-				},
-				{
 					"command": "spockeeCli.startSpockee",
 					"when": "view == spockeeCli",
-					"group": "navigation@2"
+					"group": "navigation@1"
 				},
 				{
 					"command": "dockerState.cleanUp",
@@ -107,6 +102,10 @@
 				}
 			],
 			"view/item/context": [
+				{
+					"command": "spockeeCli.editSettings",
+					"when": "view == spockeeCli && viewItem == cliSettingsSeparator"
+				},
 				{
 					"command": "dockerStateGroup.attachLogs",
 					"when": "view == spockeeDockerState && viewItem == dockerStateGroup"

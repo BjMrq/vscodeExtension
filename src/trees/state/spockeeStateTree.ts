@@ -6,7 +6,6 @@ import { StateContainer } from "./stateContainer";
 import { DockerStateGroup } from "./stateDockerGroup";
 import { StateEmulator } from "./stateEmulator";
 
-// eslint-disable-next-line import/no-unused-modules
 export class SpockeeStateTree
   implements
     vscode.TreeDataProvider<DockerStateGroup | StateContainer | StateEmulator> {
