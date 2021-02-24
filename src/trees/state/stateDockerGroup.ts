@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
 import { SpockeeDockerGroup } from "../../types/docker";
 import { StateContainer } from "./stateContainer";

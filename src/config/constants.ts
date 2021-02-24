@@ -32,3 +32,7 @@ export const dataType = {
   state: "state",
   version: "version",
 } as const;
+
+export const noneState = "none";
+
+export const settingsFilePath = `${spockeeRoot}/.spockee/settings.json` as const;

@@ -1,7 +1,13 @@
 /* eslint-disable max-statements */
 import { commands } from "vscode";
 import { openInCode } from "./commands/openInCode";
-import { executeCommand, executeCommandWithArgument } from "./commands/cli";
+import {
+  editSpockeeSettings,
+  executeCommand,
+  executeCommandWithArgument,
+  startSpockee,
+  stopSpockee,
+} from "./commands/cli";
 import {
   updateApplicationTreesState,
   updateStateTreesState,
@@ -12,6 +18,7 @@ import {
   basicDockerCleanUp,
   dockerStopAndRemove,
   installDependencyDockerContainerState,
+  openComposeConfig,
   refreshDependenciesDockerContainerState,
   startDockerComposeGroup,
   startShellDockerContainerState,
@@ -31,12 +38,10 @@ export const registerCommands = () => {
     "spockeeApplicationData.refreshEntry",
     updateApplicationTreesState
   );
-
   commands.registerCommand(
     "spockeeInstalledApplications.cleanMerged",
     cleanMergedBranches
   );
-
   commands.registerCommand(
     "spockeeInstalledApplications.pullChanges",
     pullLatest
@@ -59,23 +64,25 @@ export const registerCommands = () => {
 
   // CLI
   commands.registerCommand("spockeeCli.runCommand", executeCommand);
-
   commands.registerCommand(
     "spockeeCli.runCommandWithArgument",
     executeCommandWithArgument
   );
+  commands.registerCommand("spockeeCli.editSettings", editSpockeeSettings);
+  commands.registerCommand("spockeeCli.startSpockee", startSpockee);
+  commands.registerCommand("spockeeCli.stopSpockee", stopSpockee);
 
   // Install
   commands.registerCommand("spockeeApp.install", installApplication);
 
   // Docker
+  commands.registerCommand("dockerGroup.openComposeConfig", openComposeConfig);
   commands.registerCommand("dockerGroup.startCompose", startDockerComposeGroup);
 
   // State
 
   // Tree
   commands.registerCommand("dockerState.removeContainers", dockerStopAndRemove);
-
   commands.registerCommand("dockerState.cleanUp", basicDockerCleanUp);
 
   // Elements

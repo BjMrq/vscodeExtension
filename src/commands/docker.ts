@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import { ProgressLocation, window } from "vscode";
 import { DockerGroup } from "../trees/docker/dockerGroup";
 import { StateContainer } from "../trees/state/stateContainer";
@@ -171,8 +170,11 @@ export const startDockerComposeGroup = async ({
     `${dockerGroupCommand} logs -f --tail="600"`,
     false,
     async () => {
-      // await simpleExec(dockerGroupCommand, "down");
       await updateStateTreesState();
     }
   );
+};
+
+export const openComposeConfig = async ({ dockerGroupData }: DockerGroup) => {
+  await simpleExec(`code ${dockerGroupData.file}`);
 };

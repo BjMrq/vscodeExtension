@@ -33,10 +33,3 @@ export const simpleExec = async (
 
   return messageCli.stdout;
 };
-
-export const cliSendActionSync = (...cliArguments: string[]): string =>
-  String.fromCharCode(
-    ...((spawnSync("spockee", [...cliArguments, "--code"], {
-      env: { ...process.env, SPOCKEE_ROOT: spockeeRoot },
-    }).stdout as unknown) as number[])
-  );

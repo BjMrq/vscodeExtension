@@ -19,3 +19,7 @@ export type SpockeeApplication = {
   dependencies: string;
   activeBranch: string;
 };
+
+export type SpockeeSetting = {
+  startFlags: string;
+};

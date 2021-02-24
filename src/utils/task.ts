@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import { Task, TaskScope, ShellExecution, tasks } from "vscode";
 import { spockeeRoot, spockeeEnvironments } from "../config/constants";
 

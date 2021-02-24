@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import { TreeItem, ThemeIcon } from "vscode";
 import { SpockeeApplication } from "../../types/application";
 

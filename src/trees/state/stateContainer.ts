@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
 import { StateContainerData } from "../../types/docker";
 import { getMediaPath } from "../../utils/getMedia";
