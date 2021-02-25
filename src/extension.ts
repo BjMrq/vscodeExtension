@@ -34,6 +34,3 @@ export async function activate() {
 
 // eslint-disable-next-line import/no-unused-modules
 export function deactivate() {}
-// TODO roulette setting open spockee settings
-// use the set flags to prefill input for flags
-// todo open docker-compose files

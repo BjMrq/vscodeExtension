@@ -80,9 +80,22 @@ export const updateApplicationTreesState = async (
       .map((treeInfo) => treeInfo.tree)
   )(spockeeData || (await getSpockeeApplicationData()));
 
-export const updateStateTreesState = async (spockeeData?: SpockeeStateData) =>
-  updateTreesState(
-    Object.values(spockeeTrees)
-      .filter((treeInfo) => treeInfo.dataSourceType === dataTreeTypes.state)
-      .map((treeInfo) => treeInfo.tree)
-  )(spockeeData || (await getSpockeeStateData()));
+export const updateStateTreesState = async (spockeeData?: SpockeeStateData) => {
+  void vscode.window.withProgress(
+    {
+      title: "Refreshing state",
+      location: { viewId: "spockeeDockerState" },
+    },
+    async () => {
+      updateTreesState(
+        Object.values(spockeeTrees)
+          .filter((treeInfo) => treeInfo.dataSourceType === dataTreeTypes.state)
+          .map((treeInfo) => treeInfo.tree)
+      )(spockeeData || (await getSpockeeStateData()));
+
+      return new Promise<void>((resolve) => {
+        resolve();
+      });
+    }
+  );
+};
