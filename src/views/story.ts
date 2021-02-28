@@ -21,6 +21,8 @@ export const getWebviewContent = (story: DevelopmentStory) => {
 
   const hasTasks = storyData.tasks.length !== 0;
 
+  console.log(storyData);
+
     return `<!DOCTYPE html>
   <html lang="en">
   <head>
@@ -65,7 +67,8 @@ export const getWebviewContent = (story: DevelopmentStory) => {
     `<ul>
       ${pullRequests
         .map((pullRequest) => `<li>${converter.makeHtml(
-          `${pullRequest.merged ? "*merged* - " : "*open* - "}
+          `**${pullRequest.url.split("spockee/")[1].split("/")[0] || ""}** -
+          ${pullRequest.merged ? "*merged* - " : "*open* - "}
           [${pullRequest.branch_name}](${pullRequest.url}) 
           ${pullRequest.review_status ? `(${pullRequest.review_status})` : ""}`)}</li>`
         ).join("")
