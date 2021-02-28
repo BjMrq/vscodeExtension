@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
 import { SpockeeApplication } from "../../types/application";
 import { SpockeeApplicationData } from "../../types/data";
@@ -6,7 +5,7 @@ import { InstalledApplication } from "./installedApplicationElement";
 
 export class InstalledApplicationsTree
   implements vscode.TreeDataProvider<InstalledApplication> {
-  private spockeeInstalledApplications: SpockeeApplication[];
+  spockeeInstalledApplications: SpockeeApplication[];
 
   constructor(spockeeApplicationData: SpockeeApplicationData) {
     this.spockeeInstalledApplications = spockeeApplicationData.applicationList;
@@ -18,7 +17,6 @@ export class InstalledApplicationsTree
 
   readonly onDidChangeTreeData: vscode.Event<
     InstalledApplication | undefined | null | void
-    // eslint-disable-next-line no-invalid-this
   > = this._onDidChangeTreeData.event;
 
   refreshWith(spockeeApplicationData: SpockeeApplicationData) {

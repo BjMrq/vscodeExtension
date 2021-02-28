@@ -9,6 +9,12 @@ export class StateContainer extends vscode.TreeItem {
       : "red_container.svg"
   );
 
+  command = {
+    title: "Attach logs",
+    command: "dockerStateContainer.attachLogs",
+    arguments: [this],
+  };
+
   contextValue = "dockerStateContainer";
 
   constructor(public readonly stateContainerData: StateContainerData) {

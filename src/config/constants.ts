@@ -3,7 +3,11 @@
 import "dotenv/config";
 import { SpockeeApplication } from "../types/application";
 import { CliCommand } from "../types/command";
-import { SpockeeApplicationData, SpockeeStateData } from "../types/data";
+import {
+  SpockeeApplicationData,
+  SpockeeStateData,
+  SpockeeStoriesData,
+} from "../types/data";
 import { SpockeeDockerGroup, StateContainerData } from "../types/docker";
 
 const { SPOCKEE_ROOT, SPOCKEE_TEST, IS_DEV } = process.env;
@@ -27,9 +31,15 @@ export const initSpockeeStateData = {
   containersState: [] as StateContainerData[],
 } as SpockeeStateData;
 
+export const initSpockeeStoriesData = {
+  workflowsWithStories: [],
+  hashTeamMembers: {},
+} as SpockeeStoriesData;
+
 export const dataType = {
   applications: "applications",
   state: "state",
+  stories: "stories",
   version: "version",
 } as const;
 

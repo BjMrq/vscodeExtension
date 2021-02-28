@@ -7,7 +7,7 @@
 		"type": "git",
 		"url": "https://github.com/BjMrq/vscodeExtension"
 	},
-	"version": "0.1.8",
+	"version": "0.1.9",
 	"engines": {
 		"vscode": "^1.53.0"
 	},
@@ -16,7 +16,8 @@
 	],
 	"activationEvents": [
 		"onView:spockeeExplorer",
-		"onView:spockeeDockerState"
+		"onView:spockeeDockerState",
+		"onView:spockeeStories"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -31,6 +32,10 @@
 		},
 		"views": {
 			"spockeeExplorer": [
+				{
+					"id": "spockeeStories",
+					"name": "Stories"
+				},
 				{
 					"id": "spockeeCli",
 					"name": "CLI Commands"
@@ -55,6 +60,16 @@
 		},
 		"menus": {
 			"view/title": [
+				{
+					"command": "spockeeStoriesData.searchQuery",
+					"when": "view == spockeeStories",
+					"group": "navigation@0"
+				},
+				{
+					"command": "spockeeStoriesData.refreshEntry",
+					"when": "view == spockeeStories",
+					"group": "navigation@1"
+				},
 				{
 					"command": "spockeeCli.editSettings",
 					"when": "view == spockeeCli",
@@ -107,6 +122,21 @@
 				}
 			],
 			"view/item/context": [
+				{
+					"command": "spockeeStoriesData.changeState",
+					"when": "view == spockeeStories && viewItem == spockeeStory",
+					"group": "@0"
+				},
+				{
+					"command": "spockeeStoriesData.startStory",
+					"when": "view == spockeeStories && viewItem == spockeeStory",
+					"group": "@1"
+				},
+				{
+					"command": "spockeeStoriesData.openBrowser",
+					"when": "view == spockeeStories && viewItem == spockeeStory",
+					"group": "@2"
+				},
 				{
 					"command": "spockeeCli.editSettings",
 					"when": "view == spockeeCli && viewItem == cliSettingsSeparator"
@@ -166,6 +196,34 @@
 			]
 		},
 		"commands": [
+			{
+				"command": "spockeeStoriesData.refreshEntry",
+				"title": "Refresh",
+				"icon": "$(refresh~spin)"
+			},
+			{
+				"command": "spockeeStoriesData.changeState",
+				"title": "Change state",
+				"icon": "$(go-to-file)"
+			},
+			{
+				"command": "spockeeStoriesData.startStory",
+				"title": "Start",
+				"icon": "$(flame)"
+			},
+			{
+				"command": "spockeeStoriesData.openBrowser",
+				"title": "Open in browser"
+			},
+			{
+				"command": "spockeeStoriesData.openCode",
+				"title": "Open in code"
+			},
+			{
+				"command": "spockeeStoriesData.searchQuery",
+				"title": "Search",
+				"icon": "$(search)"
+			},
 			{
 				"command": "spockeeCli.editSettings",
 				"title": "Edit Spockee settings",
@@ -294,7 +352,7 @@
 		"@types/vscode": "^1.53.0",
 		"@typescript-eslint/eslint-plugin": "^4.1.1",
 		"@typescript-eslint/parser": "^4.15.2",
-		"eslint": "^7.20.0",
+		"eslint": "^7.8.1",
 		"eslint-config-airbnb-typescript": "^12.3.1",
 		"eslint-config-hardcore": "^13.2.0",
 		"eslint-config-standard": "16.0.2",
@@ -308,9 +366,10 @@
 	"dependencies": {
 		"@bjmrq/utils": "0.0.23",
 		"@types/ramda": "^0.27.38",
+		"@types/showdown": "^1.9.3",
+		"clubhouse-lib": "^0.10.0",
 		"dotenv": "^8.2.0",
-		"open": "^7.4.2",
 		"ramda": "^0.27.1",
-		"shelljs": "^0.8.4"
+		"showdown": "^1.9.1"
 	}
 }

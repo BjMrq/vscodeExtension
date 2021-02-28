@@ -55,6 +55,7 @@
         "class-methods-use-this": "off",
         "promise/avoid-new": "off",
         "no-void": "off",
+        "no-invalid-this": "off",
         // Eslint General
         "max-len": [
             "warn",

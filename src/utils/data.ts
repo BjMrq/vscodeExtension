@@ -6,30 +6,10 @@ import {
   PossibleDataType,
   SpockeeApplicationData,
   SpockeeStateData,
+  SpockeeStoriesData,
   SpockeeVersionData,
 } from "../types/data";
 import { cliSendActionAsync } from "./cli";
-
-// const getSpockeeData = <M extends PossibleDataType>(
-//   dataType: M
-// ) => (): M extends DataTypes["applications"]
-//   ? SpockeeApplicationData
-//   : M extends DataTypes["state"]
-//   ? SpockeeStateData
-//   : M extends DataTypes["version"]
-//   ? SpockeeVersionData
-//   : never => {
-//   const cliResponse = cliSendActionSync("code", dataType);
-
-//   try {
-//     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-//     return JSON.parse(cliResponse);
-//   } catch {
-//     throw new Error(
-//       `Cli data could not been parsed, was expecting JSON instead received: ${cliResponse}`
-//     );
-//   }
-// };
 
 const getSpockeeAsyncData = <M extends PossibleDataType>(
   dataType: M
@@ -40,6 +20,8 @@ const getSpockeeAsyncData = <M extends PossibleDataType>(
     ? SpockeeStateData
     : M extends DataTypes["version"]
     ? SpockeeVersionData
+    : M extends DataTypes["stories"]
+    ? SpockeeStoriesData
     : never
 > => {
   const cliResponse = await cliSendActionAsync("code", dataType);
@@ -60,14 +42,42 @@ export const getSpockeeStateData = getSpockeeAsyncData("state");
 
 export const getSpockeeVersionData = getSpockeeAsyncData("version");
 
+export const getSpockeeStoriesData = getSpockeeAsyncData("stories");
+
 function updateTreesState(trees: vscode.TreeDataProvider<any>[]) {
-  return (spockeeData: SpockeeApplicationData | SpockeeStateData) => {
+  return (
+    spockeeData: SpockeeApplicationData | SpockeeStateData | SpockeeStoriesData
+  ) => {
     trees.forEach(function update(tree) {
       // @ts-expect-error
       tree.refreshWith(spockeeData);
     });
   };
 }
+
+export const updateStoriesTreesState = async (
+  spockeeData?: SpockeeStoriesData
+) => {
+  void vscode.window.withProgress(
+    {
+      title: "Refreshing stories",
+      location: { viewId: "spockeeStories" },
+    },
+    async () => {
+      updateTreesState(
+        Object.values(spockeeTrees)
+          .filter(
+            (treeInfo) => treeInfo.dataSourceType === dataTreeTypes.stories
+          )
+          .map((treeInfo) => treeInfo.tree)
+      )(spockeeData || (await getSpockeeStoriesData()));
+
+      return new Promise<void>((resolve) => {
+        resolve();
+      });
+    }
+  );
+};
 
 export const updateApplicationTreesState = async (
   spockeeData?: SpockeeApplicationData

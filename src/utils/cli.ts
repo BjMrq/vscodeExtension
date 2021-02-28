@@ -1,4 +1,4 @@
-import { exec, spawnSync } from "child_process";
+import { exec } from "child_process";
 import { spockeeEnvironments, spockeeRoot } from "../config/constants";
 import { promisify } from "util";
 
@@ -7,18 +7,20 @@ const asyncExec = promisify(exec);
 export const cliSendActionAsync = async (
   ...cliArguments: string[]
 ): Promise<string> => {
-  const messageCli = await asyncExec(
-    `spockee ${cliArguments.join(" ")} --code`,
-    {
-      env: spockeeEnvironments,
-    }
-  );
+  try {
+    const messageCli = await asyncExec(
+      `spockee ${cliArguments.join(" ")} --code`,
+      {
+        env: spockeeEnvironments,
+      }
+    );
 
-  if (messageCli.stdout) return messageCli.stdout;
+    if (messageCli.stderr) return messageCli.stderr;
 
-  if (messageCli.stderr) return messageCli.stderr;
-
-  return "An error happened with the cli";
+    return messageCli.stdout;
+  } catch (error) {
+    return (error as Error).message;
+  }
 };
 
 export const simpleExec = async (

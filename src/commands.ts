@@ -1,6 +1,5 @@
 /* eslint-disable max-statements */
 import { commands } from "vscode";
-import { openInCode } from "./commands/openInCode";
 import {
   editSpockeeSettings,
   executeCommand,
@@ -11,6 +10,7 @@ import {
 import {
   updateApplicationTreesState,
   updateStateTreesState,
+  updateStoriesTreesState,
 } from "./utils/data";
 import {
   attachLogsDockerContainerState,
@@ -30,93 +30,130 @@ import {
   installApplication,
   pullLatest,
 } from "./commands/git";
+import { openApplicationInCode } from "./commands/openInCode";
+import {
+  openStoryInCode,
+  openStoryInBrowser,
+  searchStories,
+  changeStoryState,
+  startStory,
+} from "./commands/stories";
 
 export const registerCommands = () => {
-  // Commands
+  try {
+    // Commands
+    // Stories
+    commands.registerCommand(
+      "spockeeStoriesData.refreshEntry",
+      updateStoriesTreesState
+    );
+    commands.registerCommand("spockeeStoriesData.searchQuery", searchStories);
+    commands.registerCommand("spockeeStoriesData.openCode", openStoryInCode);
+    commands.registerCommand(
+      "spockeeStoriesData.openBrowser",
+      openStoryInBrowser
+    );
+    commands.registerCommand("spockeeStoriesData.startStory", startStory);
+    commands.registerCommand(
+      "spockeeStoriesData.changeState",
+      changeStoryState
+    );
 
-  // Applications
-  commands.registerCommand(
-    "spockeeApplicationData.refreshEntry",
-    updateApplicationTreesState
-  );
-  commands.registerCommand(
-    "spockeeInstalledApplications.cleanMerged",
-    cleanMergedBranches
-  );
-  commands.registerCommand(
-    "spockeeInstalledApplications.pullChanges",
-    pullLatest
-  );
+    // Applications
+    commands.registerCommand(
+      "spockeeApplicationData.refreshEntry",
+      updateApplicationTreesState
+    );
+    commands.registerCommand(
+      "spockeeInstalledApplications.cleanMerged",
+      cleanMergedBranches
+    );
+    commands.registerCommand(
+      "spockeeInstalledApplications.pullChanges",
+      pullLatest
+    );
 
-  // State
-  commands.registerCommand(
-    "spockeeStateData.refreshEntry",
-    updateStateTreesState
-  );
+    // State
+    commands.registerCommand(
+      "spockeeStateData.refreshEntry",
+      updateStateTreesState
+    );
 
-  // Open in code
-  commands.registerCommand("spockeeApp.openInCode", openInCode);
+    // Open in code
+    commands.registerCommand("spockeeApp.openInCode", openApplicationInCode);
 
-  // Uninstall
-  commands.registerCommand(
-    "spockeeApp.uninstallApplication",
-    uninstallApplication
-  );
+    // Uninstall
+    commands.registerCommand(
+      "spockeeApp.uninstallApplication",
+      uninstallApplication
+    );
 
-  // CLI
-  commands.registerCommand("spockeeCli.runCommand", executeCommand);
-  commands.registerCommand(
-    "spockeeCli.runCommandWithArgument",
-    executeCommandWithArgument
-  );
-  commands.registerCommand("spockeeCli.editSettings", editSpockeeSettings);
-  commands.registerCommand("spockeeCli.startSpockee", startSpockee);
-  commands.registerCommand("spockeeCli.stopSpockee", stopSpockee);
+    // CLI
+    commands.registerCommand("spockeeCli.runCommand", executeCommand);
+    commands.registerCommand(
+      "spockeeCli.runCommandWithArgument",
+      executeCommandWithArgument
+    );
+    commands.registerCommand("spockeeCli.editSettings", editSpockeeSettings);
+    commands.registerCommand("spockeeCli.startSpockee", startSpockee);
+    commands.registerCommand("spockeeCli.stopSpockee", stopSpockee);
 
-  // Install
-  commands.registerCommand("spockeeApp.install", installApplication);
+    // Install
+    commands.registerCommand("spockeeApp.install", installApplication);
 
-  // Docker
-  commands.registerCommand("dockerGroup.openComposeConfig", openComposeConfig);
-  commands.registerCommand("dockerGroup.startCompose", startDockerComposeGroup);
-  commands.registerCommand("dockerGroup.envConfig", openComposeVariable);
+    // Docker
+    commands.registerCommand(
+      "dockerGroup.openComposeConfig",
+      openComposeConfig
+    );
+    commands.registerCommand(
+      "dockerGroup.startCompose",
+      startDockerComposeGroup
+    );
+    commands.registerCommand("dockerGroup.envConfig", openComposeVariable);
 
-  // State
+    // State
 
-  // Tree
-  commands.registerCommand("dockerState.removeContainers", dockerStopAndRemove);
-  commands.registerCommand("dockerState.cleanUp", basicDockerCleanUp);
+    // Tree
+    commands.registerCommand(
+      "dockerState.removeContainers",
+      dockerStopAndRemove
+    );
+    commands.registerCommand("dockerState.cleanUp", basicDockerCleanUp);
 
-  // Elements
+    // Elements
 
-  // Attach docker logs
-  // Docker group
-  commands.registerCommand(
-    "dockerStateGroup.attachLogs",
-    attachLogsDockerGroupStateLog
-  );
+    // Attach docker logs
+    // Docker group
+    commands.registerCommand(
+      "dockerStateGroup.attachLogs",
+      attachLogsDockerGroupStateLog
+    );
 
-  // Container
-  commands.registerCommand(
-    "dockerStateContainer.attachLogs",
-    attachLogsDockerContainerState
-  );
+    // Container
+    commands.registerCommand(
+      "dockerStateContainer.attachLogs",
+      attachLogsDockerContainerState
+    );
 
-  // Start shell
-  commands.registerCommand(
-    "dockerStateContainer.startShell",
-    startShellDockerContainerState
-  );
+    // Start shell
+    commands.registerCommand(
+      "dockerStateContainer.startShell",
+      startShellDockerContainerState
+    );
 
-  // Refresh dependencies
-  commands.registerCommand(
-    "dockerStateContainer.refreshDependencies",
-    refreshDependenciesDockerContainerState
-  );
+    // Refresh dependencies
+    commands.registerCommand(
+      "dockerStateContainer.refreshDependencies",
+      refreshDependenciesDockerContainerState
+    );
 
-  // Install dependency
-  commands.registerCommand(
-    "dockerStateContainer.installDependency",
-    installDependencyDockerContainerState
-  );
+    // Install dependency
+    commands.registerCommand(
+      "dockerStateContainer.installDependency",
+      installDependencyDockerContainerState
+    );
+  } catch (error) {
+    console.error(error);
+  }
 };

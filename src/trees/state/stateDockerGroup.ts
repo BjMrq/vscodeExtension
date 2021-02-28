@@ -10,6 +10,12 @@ export class DockerStateGroup extends vscode.TreeItem {
     light: getMediaPath("dark_docker.svg"),
   };
 
+  command = {
+    title: "Attach logs",
+    command: "dockerStateGroup.attachLogs",
+    arguments: [this],
+  };
+
   contextValue = "dockerStateGroup";
 
   constructor(

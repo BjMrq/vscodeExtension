@@ -2,6 +2,7 @@ import { dataType } from "../config/constants";
 import { SpockeeApplication, SpockeeSetting } from "./application";
 import { Commands } from "./command";
 import { SpockeeDockerGroup, StateContainerData } from "./docker";
+import { MembersRepo, WorkflowStateWithStories } from "./stories";
 
 export type SpockeeStateData = {
   containerGroup: SpockeeDockerGroup;
@@ -15,6 +16,11 @@ export type SpockeeApplicationData = {
   applicationList: SpockeeApplication[];
   dockerGroups: SpockeeDockerGroup[];
   cliCommands: Commands;
+};
+
+export type SpockeeStoriesData = {
+  workflowsWithStories: WorkflowStateWithStories[];
+  hashTeamMembers: MembersRepo;
 };
 
 export type SpockeeVersionData = {

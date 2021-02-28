@@ -1,15 +1,20 @@
-// eslint-disable-next-line import/no-unresolved
 import { window } from "vscode";
 import { SpockeeCLITree } from "./trees/cli/spockeeCliTree";
-import { initSpockeeData, initSpockeeStateData } from "./config/constants";
+import {
+  initSpockeeData,
+  initSpockeeStateData,
+  initSpockeeStoriesData,
+} from "./config/constants";
 import { SpockeeDockerGroupTree } from "./trees/docker/spockeeDockerTree";
 import { InstalledApplicationsTree } from "./trees/installedApplication/installedApplicationsTree";
 import { SpockeeApplicationsTree } from "./trees/spockeeApplications/spockeeApplicationsTree";
 import { SpockeeStateTree } from "./trees/state/spockeeStateTree";
+import { SpockeeStoriesTree } from "./trees/stories/spockeeStoriesTree";
 
 export const dataTreeTypes = {
   application: "application",
   state: "state",
+  stories: "stories",
 };
 
 export const spockeeTrees = {
@@ -37,9 +42,19 @@ export const spockeeTrees = {
     tree: new SpockeeApplicationsTree(initSpockeeData),
     dataSourceType: dataTreeTypes.application,
   },
+
+  stories: {
+    tree: new SpockeeStoriesTree(initSpockeeStoriesData),
+    dataSourceType: dataTreeTypes.stories,
+  },
 };
 
 export const registerTrees = () => {
+  // Stories
+  window.createTreeView("spockeeStories", {
+    treeDataProvider: spockeeTrees.stories.tree,
+  });
+
   // CLI
   window.createTreeView("spockeeCli", {
     treeDataProvider: spockeeTrees.cliActions.tree,

@@ -1,15 +1,18 @@
+/* eslint-disable import/no-unused-modules */
 import * as vscode from "vscode";
 import { registerCommands } from "./commands";
 import { registerTrees } from "./trees";
 import {
   getSpockeeApplicationData,
   getSpockeeStateData,
+  getSpockeeStoriesData,
   updateApplicationTreesState,
   updateStateTreesState,
+  updateStoriesTreesState,
 } from "./utils/data";
 import { checkForUpdates } from "./utils/update";
 
-// eslint-disable-next-line import/no-unused-modules
+// eslint-disable-next-line max-statements
 export async function activate() {
   const spockeeApplicationData = await getSpockeeApplicationData();
 
@@ -24,6 +27,10 @@ export async function activate() {
 
     await updateStateTreesState(spockeeStateData);
 
+    const spockeeStoriesData = await getSpockeeStoriesData();
+
+    await updateStoriesTreesState(spockeeStoriesData);
+
     await checkForUpdates();
   } else {
     vscode.window.showErrorMessage(
@@ -32,5 +39,4 @@ export async function activate() {
   }
 }
 
-// eslint-disable-next-line import/no-unused-modules
 export function deactivate() {}

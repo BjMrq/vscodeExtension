@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import * as vscode from "vscode";
 import { SpockeeApplication } from "../../types/application";
 import { SpockeeApplicationData } from "../../types/data";
@@ -6,7 +5,7 @@ import { Application } from "./applicationElement";
 
 export class SpockeeApplicationsTree
   implements vscode.TreeDataProvider<Application> {
-  private spockeeApplications: SpockeeApplication[];
+  spockeeApplications: SpockeeApplication[];
 
   constructor(spockeeApplicationData: SpockeeApplicationData) {
     this.spockeeApplications = spockeeApplicationData.applicationList;

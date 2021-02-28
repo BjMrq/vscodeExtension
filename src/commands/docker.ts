@@ -2,9 +2,10 @@ import { ProgressLocation, window } from "vscode";
 import { DockerGroup } from "../trees/docker/dockerGroup";
 import { StateContainer } from "../trees/state/stateContainer";
 import { DockerStateGroup } from "../trees/state/stateDockerGroup";
-import { cliSendActionAsync, simpleExec } from "../utils/cli";
+import { cliSendActionAsync } from "../utils/cli";
 import { updateStateTreesState } from "../utils/data";
 import { createTask } from "../utils/task";
+import { openInCode } from "./openInCode";
 
 export const attachLogsDockerGroupStateLog = async ({
   dockerGroupData,
@@ -176,9 +177,9 @@ export const startDockerComposeGroup = async ({
 };
 
 export const openComposeConfig = async ({ dockerGroupData }: DockerGroup) => {
-  await simpleExec(`code ${dockerGroupData.file}`);
+  await openInCode(dockerGroupData.file);
 };
 
 export const openComposeVariable = async () => {
-  await simpleExec("code .env");
+  await openInCode(".env");
 };
