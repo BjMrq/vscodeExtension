@@ -125,7 +125,7 @@ export const dockerStopAndRemove = async () => {
 export const startDockerComposeGroup = async ({
   dockerGroupData: { name: dockerGroupName, command: dockerGroupCommand },
 }: DockerGroup) => {
-  await window.withProgress(
+  const composeResult = await window.withProgress(
     {
       title: `Start ${dockerGroupName} compose group`,
       location: ProgressLocation.Notification,
@@ -133,7 +133,7 @@ export const startDockerComposeGroup = async ({
     async (progress) => {
       setTimeout(() => {
         progress.report({
-          increment: 40,
+          increment: 20,
           message: "Pulling latest changes",
         });
       }, 2000);
@@ -152,7 +152,7 @@ export const startDockerComposeGroup = async ({
         });
       }, 8000);
 
-      await cliSendActionAsync(
+      const cliComposeResult = await cliSendActionAsync(
         "docker",
         `compose-${dockerGroupName}`,
         "--detach"
@@ -160,20 +160,26 @@ export const startDockerComposeGroup = async ({
 
       await updateStateTreesState();
 
-      return await new Promise<void>((resolve) => {
-        resolve();
+      return await new Promise<string>((resolve) => {
+        resolve(cliComposeResult);
       });
     }
   );
 
-  await createTask(
-    `${dockerGroupName} logs`,
-    `${dockerGroupCommand} logs -f --tail="600"`,
-    false,
-    async () => {
-      await updateStateTreesState();
-    }
-  );
+  // If it failed show error message
+  if (composeResult.includes("failed")) {
+    window.showErrorMessage(composeResult);
+  } else {
+    // If it did not fail attach to the logs
+    await createTask(
+      `${dockerGroupName} logs`,
+      `${dockerGroupCommand} logs -f --tail="600"`,
+      false,
+      async () => {
+        await updateStateTreesState();
+      }
+    );
+  }
 };
 
 export const openComposeConfig = async ({ dockerGroupData }: DockerGroup) => {
