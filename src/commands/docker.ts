@@ -125,52 +125,52 @@ export const dockerStopAndRemove = async () => {
 export const startDockerComposeGroup = async ({
   dockerGroupData: { name: dockerGroupName, command: dockerGroupCommand },
 }: DockerGroup) => {
-  const composeResult = await window.withProgress(
-    {
-      title: `Start ${dockerGroupName} compose group`,
-      location: ProgressLocation.Notification,
-    },
-    async (progress) => {
-      setTimeout(() => {
-        progress.report({
-          increment: 20,
-          message: "Pulling latest changes",
+  try {
+    await window.withProgress(
+      {
+        title: `Start ${dockerGroupName} compose group`,
+        location: ProgressLocation.Notification,
+      },
+      async (progress) => {
+        setTimeout(() => {
+          progress.report({
+            increment: 20,
+            message: "Pulling latest changes",
+          });
+        }, 2000);
+
+        setTimeout(() => {
+          progress.report({
+            increment: 20,
+            message: "Verifying dependencies",
+          });
+        }, 6000);
+
+        setTimeout(() => {
+          progress.report({
+            increment: 40,
+            message: "Starting containers",
+          });
+        }, 8000);
+
+        const cliComposeResult = await cliSendActionAsync(
+          "docker",
+          `compose-${dockerGroupName}`,
+          "--detach"
+        );
+
+        await updateStateTreesState();
+
+        return await new Promise<string>((resolve, reject) => {
+          if (cliComposeResult.includes("failed")) {
+            reject(cliComposeResult);
+          } else {
+            resolve(cliComposeResult);
+          }
         });
-      }, 2000);
+      }
+    );
 
-      setTimeout(() => {
-        progress.report({
-          increment: 20,
-          message: "Verifying dependencies",
-        });
-      }, 6000);
-
-      setTimeout(() => {
-        progress.report({
-          increment: 40,
-          message: "Starting containers",
-        });
-      }, 8000);
-
-      const cliComposeResult = await cliSendActionAsync(
-        "docker",
-        `compose-${dockerGroupName}`,
-        "--detach"
-      );
-
-      await updateStateTreesState();
-
-      return await new Promise<string>((resolve) => {
-        resolve(cliComposeResult);
-      });
-    }
-  );
-
-  // If it failed show error message
-  if (composeResult.includes("failed")) {
-    window.showErrorMessage(composeResult);
-  } else {
-    // If it did not fail attach to the logs
     await createTask(
       `${dockerGroupName} logs`,
       `${dockerGroupCommand} logs -f --tail="600"`,
@@ -179,6 +179,9 @@ export const startDockerComposeGroup = async ({
         await updateStateTreesState();
       }
     );
+  } catch (error) {
+    console.log(error);
+    window.showErrorMessage(error);
   }
 };
 
