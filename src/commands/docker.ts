@@ -122,10 +122,16 @@ export const dockerStopAndRemove = async () => {
   );
 };
 
-export const startDockerComposeGroup = async ({
+export const startDockerComposeGroup = (addFlag: boolean) => async ({
   dockerGroupData: { name: dockerGroupName, command: dockerGroupCommand },
 }: DockerGroup) => {
   try {
+    const composeFlag = addFlag
+      ? (await window.showInputBox({
+          prompt: "Add flag while composing docker group",
+        })) || ""
+      : "";
+
     await window.withProgress(
       {
         title: `Start ${dockerGroupName} compose group`,
@@ -156,6 +162,7 @@ export const startDockerComposeGroup = async ({
         const cliComposeResult = await cliSendActionAsync(
           "docker",
           `compose-${dockerGroupName}`,
+          composeFlag,
           "--detach"
         );
 

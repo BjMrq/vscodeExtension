@@ -7,7 +7,7 @@
 		"type": "git",
 		"url": "https://github.com/BjMrq/vscodeExtension"
 	},
-	"version": "0.1.10",
+	"version": "0.1.12",
 	"engines": {
 		"vscode": "^1.53.0"
 	},
@@ -175,9 +175,14 @@
 					"group": "@0"
 				},
 				{
-					"command": "dockerGroup.openComposeConfig",
+					"command": "dockerGroup.startComposeWithFlag",
 					"when": "view == spockeeDockerGroup && viewItem == dockerGroup",
 					"group": "@1"
+				},
+				{
+					"command": "dockerGroup.openComposeConfig",
+					"when": "view == spockeeDockerGroup && viewItem == dockerGroup",
+					"group": "@2"
 				},
 				{
 					"command": "spockeeApp.openInCode",
@@ -307,6 +312,11 @@
 			{
 				"command": "dockerGroup.startCompose",
 				"title": "Start compose group",
+				"icon": "$(debug-start)"
+			},
+			{
+				"command": "dockerGroup.startComposeWithFlag",
+				"title": "Start compose group with flag",
 				"icon": "$(debug-start)"
 			},
 			{

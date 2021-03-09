@@ -108,7 +108,11 @@ export const registerCommands = () => {
     );
     commands.registerCommand(
       "dockerGroup.startCompose",
-      startDockerComposeGroup
+      startDockerComposeGroup(false)
+    );
+    commands.registerCommand(
+      "dockerGroup.startComposeWithFlag",
+      startDockerComposeGroup(true)
     );
     commands.registerCommand("dockerGroup.envConfig", openComposeVariable);
 
