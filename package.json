@@ -7,7 +7,7 @@
 		"type": "git",
 		"url": "https://github.com/BjMrq/vscodeExtension"
 	},
-	"version": "0.1.12",
+	"version": "0.1.13",
 	"engines": {
 		"vscode": "^1.53.0"
 	},
@@ -86,11 +86,6 @@
 					"group": "navigation@2"
 				},
 				{
-					"command": "dockerState.removeContainers",
-					"when": "view == spockeeDockerState",
-					"group": "navigation@1"
-				},
-				{
 					"command": "dockerGroup.envConfig",
 					"when": "view == spockeeDockerGroup",
 					"group": "navigation@0"
@@ -98,7 +93,7 @@
 				{
 					"command": "spockeeStateData.refreshEntry",
 					"when": "view == spockeeDockerState",
-					"group": "navigation@2"
+					"group": "navigation@0"
 				},
 				{
 					"command": "spockeeApplicationData.refreshEntry",
