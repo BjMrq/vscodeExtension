@@ -54,11 +54,13 @@ export const installDependencyDockerContainerState = async ({
     prompt: "Enter the dependency to install",
   })) as string;
 
-  await createTask(
-    `${containerName} install ${dependencyToInstall}`,
-    `spockee docker ${containerName} install ${dependencyToInstall}`,
-    true
-  );
+  if (dependencyToInstall) {
+    await createTask(
+      `${containerName} install ${dependencyToInstall}`,
+      `spockee docker ${containerName} install ${dependencyToInstall}`,
+      true
+    );
+  }
 };
 
 export const basicDockerCleanUp = async () => {

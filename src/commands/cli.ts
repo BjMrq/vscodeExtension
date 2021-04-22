@@ -56,7 +56,7 @@ export const startSpockee = async (): Promise<void> => {
 
   await createTask(
     "Spockee start part",
-    `spockee code-start ${selectedSystem} one ${startFlags}`,
+    `spockee code-start ${selectedSystem} one ${startFlags || ""}`,
     true
   );
 
@@ -64,7 +64,7 @@ export const startSpockee = async (): Promise<void> => {
 
   await createTask(
     "Spockee start",
-    `spockee code-start ${selectedSystem} two ${startFlags}`,
+    `spockee code-start ${selectedSystem} two ${startFlags || ""}`,
     true,
     async () => {
       await updateStateTreesState();
